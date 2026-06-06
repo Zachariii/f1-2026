@@ -349,30 +349,30 @@
 // ===== DATA =====
 
 const CALENDAR = [
-  {r:1,flag:'🇦🇺',name:'Australian GP',date:'3月6-8日',venue:'墨尔本',done:true},
-  {r:2,flag:'🇨🇳',name:'Chinese GP',date:'3月13-15日',venue:'上海',done:true,sprint:true},
-  {r:3,flag:'🇯🇵',name:'Japanese GP',date:'3月27-29日',venue:'铃鹿',done:true},
-  {r:4,flag:'🇧🇭',name:'Bahrain GP',date:'4月10-12日',venue:'萨基尔',done:true},
-  {r:5,flag:'🇸🇦',name:'Saudi Arabian GP',date:'4月17-19日',venue:'吉达',done:true},
-  {r:6,flag:'🇺🇸',name:'Miami GP',date:'5月1-3日',venue:'迈阿密',done:true,sprint:true},
-  {r:7,flag:'🇨🇦',name:'Canadian GP',date:'5月22-24日',venue:'蒙特利尔',done:true,sprint:true},
-  {r:8,flag:'🇲🇨',name:'Monaco GP',date:'6月5-7日',venue:'摩纳哥'},
-  {r:9,flag:'🇪🇸',name:'Spanish GP',date:'6月12-14日',venue:'巴塞罗那'},
-  {r:10,flag:'🇦🇹',name:'Austrian GP',date:'6月26-28日',venue:'斯皮尔伯格'},
-  {r:11,flag:'🇬🇧',name:'British GP',date:'7月3-5日',venue:'银石',sprint:true},
-  {r:12,flag:'🇧🇪',name:'Belgian GP',date:'7月17-19日',venue:'斯帕'},
-  {r:13,flag:'🇭🇺',name:'Hungarian GP',date:'7月24-26日',venue:'布达佩斯'},
-  {r:14,flag:'🇳🇱',name:'Dutch GP',date:'8月21-23日',venue:'赞德沃特',sprint:true},
-  {r:15,flag:'🇮🇹',name:'Italian GP',date:'9月4-6日',venue:'蒙扎'},
-  {r:16,flag:'🇪🇸',name:'Madrid GP 🆕',date:'9月11-13日',venue:'马德里'},
-  {r:17,flag:'🇦🇿',name:'Azerbaijan GP',date:'9月25-27日',venue:'巴库'},
-  {r:18,flag:'🇸🇬',name:'Singapore GP',date:'10月9-11日',venue:'新加坡',sprint:true},
-  {r:19,flag:'🇺🇸',name:'United States GP',date:'10月23-25日',venue:'奥斯汀'},
-  {r:20,flag:'🇲🇽',name:'Mexico City GP',date:'10月30日-11月1日',venue:'墨西哥城'},
-  {r:21,flag:'🇧🇷',name:'São Paulo GP',date:'11月6-8日',venue:'圣保罗'},
-  {r:22,flag:'🇺🇸',name:'Las Vegas GP',date:'11月19-21日',venue:'拉斯维加斯'},
-  {r:23,flag:'🇶🇦',name:'Qatar GP',date:'11月27-29日',venue:'卢赛尔'},
-  {r:24,flag:'🇦🇪',name:'Abu Dhabi GP',date:'12月4-6日',venue:'亚斯码头'},
+  {r:1,flag:'🇦🇺',name:'Australian GP', date:'3月8日',venue:'墨尔本',time:'12:00',done:true},
+  {r:2,flag:'🇨🇳',name:'Chinese GP',      date:'3月15日',venue:'上海',time:'15:00',done:true,sprint:true},
+  {r:3,flag:'🇯🇵',name:'Japanese GP',      date:'3月29日',venue:'铃鹿',time:'13:00',done:true},
+  {r:4,flag:'🇧🇭',name:'Bahrain GP',       date:'4月12日',venue:'萨基尔',time:'23:00',done:true},
+  {r:5,flag:'🇸🇦',name:'Saudi Arabian GP', date:'4月19日',venue:'吉达',time:'01:00(+1)',done:true},
+  {r:6,flag:'🇺🇸',name:'Miami GP',         date:'5月3日',venue:'迈阿密',time:'04:00(+1)',done:true,sprint:true},
+  {r:7,flag:'🇨🇦',name:'Canadian GP',      date:'5月24日',venue:'蒙特利尔',time:'04:00(+1)',done:true,sprint:true},
+  {r:8,flag:'🇲🇨',name:'Monaco GP',        date:'6月7日',venue:'蒙特卡洛',time:'21:00'},
+  {r:9,flag:'🇪🇸',name:'Spanish GP',       date:'6月14日',venue:'巴塞罗那',time:'21:00'},
+  {r:10,flag:'🇦🇹',name:'Austrian GP',     date:'6月28日',venue:'斯皮尔伯格',time:'21:00'},
+  {r:11,flag:'🇬🇧',name:'British GP',      date:'7月5日',venue:'银石',time:'22:00',sprint:true},
+  {r:12,flag:'🇧🇪',name:'Belgian GP',      date:'7月19日',venue:'斯帕',time:'21:00'},
+  {r:13,flag:'🇭🇺',name:'Hungarian GP',    date:'7月26日',venue:'布达佩斯',time:'21:00'},
+  {r:14,flag:'🇳🇱',name:'Dutch GP',        date:'8月23日',venue:'赞德沃特',time:'21:00',sprint:true},
+  {r:15,flag:'🇮🇹',name:'Italian GP',      date:'9月6日',venue:'蒙扎',time:'21:00'},
+  {r:16,flag:'🇪🇸',name:'Madrid GP 🆕',    date:'9月13日',venue:'马德里',time:'21:00'},
+  {r:17,flag:'🇦🇿',name:'Azerbaijan GP',   date:'9月27日',venue:'巴库',time:'19:00'},
+  {r:18,flag:'🇸🇬',name:'Singapore GP',    date:'10月11日',venue:'滨海湾',time:'20:00',sprint:true},
+  {r:19,flag:'🇺🇸',name:'United States GP',date:'10月25日',venue:'奥斯汀',time:'04:00(+1)'},
+  {r:20,flag:'🇲🇽',name:'Mexico City GP',   date:'11月1日',venue:'墨西哥城',time:'04:00(+1)'},
+  {r:21,flag:'🇧🇷',name:'São Paulo GP',      date:'11月8日',venue:'圣保罗',time:'01:00(+1)'},
+  {r:22,flag:'🇺🇸',name:'Las Vegas GP',      date:'11月22日(六)',venue:'拉斯维加斯',time:'12:00'},
+  {r:23,flag:'🇶🇦',name:'Qatar GP',          date:'11月29日',venue:'卢赛尔',time:'00:00(+1)'},
+  {r:24,flag:'🇦🇪',name:'Abu Dhabi GP',      date:'12月6日',venue:'亚斯码头',time:'21:00'},
 ];
 
 const TEAMS = [
@@ -449,13 +449,12 @@ function renderStandings(data) {
   html += '</div>';
 
   html += '<h2>车手积分榜</h2><div class="table-wrap"><table>';
-  html += '<thead><tr><th>#</th><th>车手</th><th>国籍</th><th>车队</th><th>冠军</th><th>积分</th></tr></thead><tbody>';
+  html += '<thead><tr><th>#</th><th>车手</th><th>车队</th><th>冠军</th><th>积分</th></tr></thead><tbody>';
   for (var i = 0; i < drivers.length; i++) {
     var d = drivers[i];
     var pcls = i < 3 ? ' pos-' + (i + 1) : '';
     html += '<tr><td class="' + pcls + '">' + (i + 1) + '</td>';
     html += '<td><strong>' + esc(d.driver) + '</strong></td>';
-    html += '<td>' + esc(d.nat || '') + '</td>';
     html += '<td><span class="team-tag ' + getTeamCls(d.team) + '">' + esc(d.team) + '</span></td>';
     html += '<td>' + (d.wins || 0) + '</td>';
     html += '<td><strong>' + esc(d.points) + '</strong></td></tr>';
@@ -483,19 +482,48 @@ function posClass(i) { return i === 1 ? 'pos-1' : i === 2 ? 'pos-2' : i === 3 ? 
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function renderCalendar() {
-  var html = '<h2>2026 赛历 · 24 场分站</h2><div class="calendar-grid">';
+  // Split into upcoming (not done) and completed
+  var upcoming = [];
+  var completed = [];
   for (var i = 0; i < CALENDAR.length; i++) {
-    var r = CALENDAR[i];
-    var cls = r.done ? ' completed' : ' upcoming';
-    html += '<div class="race-card' + cls + '">';
-    html += '<div class="round">R' + r.r + (r.done ? ' · 已完成' : '') + '</div>';
+    if (CALENDAR[i].done) completed.push(CALENDAR[i]);
+    else upcoming.push(CALENDAR[i]);
+  }
+
+  var html = '<h2>2026 赛历 · 24 场分站</h2>';
+
+  // Upcoming first
+  html += '<h3 style="font-size:0.9rem;color:var(--f1-red);margin:16px 0 10px 0;">即将举行 (' + upcoming.length + ' 场)</h3>';
+  html += '<div class="calendar-grid">';
+  for (var u = 0; u < upcoming.length; u++) {
+    var r = upcoming[u];
+    html += '<div class="race-card upcoming">';
+    html += '<div class="round">R' + r.r + '</div>';
     html += '<div class="flag">' + r.flag + '</div>';
     html += '<div class="name">' + r.name + '</div>';
     html += '<div class="date">' + r.date + ' · ' + r.venue + '</div>';
+    html += '<div class="date" style="color:var(--f1-red);font-weight:600;">🕐 正赛 ' + r.time + ' 北京时间</div>';
     if (r.sprint) html += '<div class="badge">🏃 冲刺赛</div>';
     html += '</div>';
   }
   html += '</div>';
+
+  // Completed below
+  html += '<h3 style="font-size:0.9rem;color:var(--f1-muted);margin:24px 0 10px 0;">已结束 (' + completed.length + ' 场)</h3>';
+  html += '<div class="calendar-grid">';
+  for (var c = 0; c < completed.length; c++) {
+    var r2 = completed[c];
+    html += '<div class="race-card completed">';
+    html += '<div class="round">R' + r2.r + ' · 已完成</div>';
+    html += '<div class="flag">' + r2.flag + '</div>';
+    html += '<div class="name">' + r2.name + '</div>';
+    html += '<div class="date">' + r2.date + ' · ' + r2.venue + '</div>';
+    html += '<div class="date">🕐 ' + r2.time + ' 北京时间</div>';
+    if (r2.sprint) html += '<div class="badge">🏃 冲刺赛</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+
   document.getElementById('calendar').innerHTML = html;
 }
 
@@ -523,44 +551,124 @@ function renderTeams() {
 }
 
 function renderTech() {
-  var html = '<h2>2026 技术规则 · F1 史上最大变革</h2><div class="tech-grid">';
+  var html = '';
+
+  // ---- Section 1: General 2026 rules (condensed) ----
+  html += '<h2>2026 通用技术规则</h2>';
+  html += '<div class="tech-grid">';
   html += '<div class="tech-card"><h3>📐 底盘尺寸</h3>';
   html += '<div class="spec"><span class="spec-label">最小重量</span><span>800 → <strong>768 kg</strong></span></div>';
   html += '<div class="spec"><span class="spec-label">最大轴距</span><span>3,600 → <strong>3,400 mm</strong></span></div>';
   html += '<div class="spec"><span class="spec-label">车宽</span><span>2,000 → <strong>1,900 mm</strong></span></div>';
-  html += '<div class="spec"><span class="spec-label">底板宽度</span><span>缩减 <strong>150 mm</strong></span></div>';
   html += '</div>';
   html += '<div class="tech-card"><h3>💨 主动空气动力学</h3>';
   html += '<div class="spec"><span class="spec-label">下压力</span><span>降低 <strong>15-30%</strong></span></div>';
   html += '<div class="spec"><span class="spec-label">阻力</span><span>降低 <strong>40-55%</strong></span></div>';
-  html += '<div class="spec"><span class="spec-label">Z 模式 (弯道)</span><span>高下压力</span></div>';
-  html += '<div class="spec"><span class="spec-label">X 模式 (直道)</span><span>低阻力</span></div>';
-  html += '<div class="spec"><span class="spec-label">DRS</span><span>被主动空力取代</span></div>';
+  html += '<div class="spec"><span class="spec-label">Z 模式</span><span>弯道高下压力</span></div>';
+  html += '<div class="spec"><span class="spec-label">X 模式</span><span>直道低阻力</span></div>';
   html += '</div>';
   html += '<div class="tech-card"><h3>⚡ 动力单元 · 50/50 混动</h3>';
-  html += '<div class="spec"><span class="spec-label">ICE</span><span>1.6L V6 涡轮 ~400 kW</span></div>';
-  html += '<div class="spec"><span class="spec-label">MGU-H</span><span>已完全移除</span></div>';
   html += '<div class="spec"><span class="spec-label">MGU-K</span><span>120 → <strong>350 kW</strong></span></div>';
-  html += '<div class="spec"><span class="spec-label">电能占比</span><span>接近 <strong>50%</strong></span></div>';
-  html += '<div class="spec"><span class="spec-label">燃油</span><span><strong>100% 可持续燃料</strong></span></div>';
+  html += '<div class="spec"><span class="spec-label">MGU-H</span><span>已完全移除</span></div>';
+  html += '<div class="spec"><span class="spec-label">燃油</span><span><strong>100% 可持续</strong></span></div>';
+  html += '<div class="spec"><span class="spec-label">PU 厂商</span><span>Mercedes · Ferrari · Honda · Ford</span></div>';
   html += '</div>';
-  html += '<div class="tech-card"><h3>🛞 轮胎与刹车</h3>';
-  html += '<div class="spec"><span class="spec-label">轮毂</span><span>18 英寸 (不变)</span></div>';
-  html += '<div class="spec"><span class="spec-label">前胎</span><span>缩窄 <strong>25 mm</strong></span></div>';
-  html += '<div class="spec"><span class="spec-label">后胎</span><span>缩窄 <strong>30 mm</strong></span></div>';
-  html += '<div class="spec"><span class="spec-label">供应商</span><span>Pirelli P Zero</span></div>';
-  html += '<div class="spec"><span class="spec-label">刹车</span><span>Brembo + 线控制动</span></div>';
-  html += '</div>';
-  html += '<div class="tech-card"><h3>🕹️ 车手新术语</h3>';
-  html += '<div class="spec"><span class="spec-label">Overtake Mode</span><span>距前车 &lt;1s 额外功率</span></div>';
-  html += '<div class="spec"><span class="spec-label">Boost Mode</span><span>赛道任意位置满功率</span></div>';
+  html += '<div class="tech-card"><h3>🕹️ 车手操控</h3>';
+  html += '<div class="spec"><span class="spec-label">Overtake</span><span>距前车 &lt;1s 额外功率</span></div>';
+  html += '<div class="spec"><span class="spec-label">Boost</span><span>任意位置满功率</span></div>';
   html += '<div class="spec"><span class="spec-label">Active Aero</span><span>Z/X 模式切换</span></div>';
   html += '<div class="spec"><span class="spec-label">Recharge</span><span>刹车 + 松油门回收</span></div>';
   html += '</div>';
-  html += '<div class="tech-card"><h3>🎯 变革目标</h3>';
-  html += '<p style="font-size:0.82rem;line-height:2.2;">✅ 更小更轻的赛车<br>✅ 50% 电力驱动<br>✅ 100% 可持续燃料<br>✅ 主动空力超车<br>✅ 动力单元成本控制<br>✅ 优化尾流管理</p>';
   html += '</div>';
+
+  // ---- Section 2: Per-team analysis (big four + others) ----
+  html += '<h2>车队技术优劣势分析 · 2026 赛季中</h2>';
+
+  // Mercedes
+  html += '<div class="tech-card" style="margin-bottom:14px;border-left:4px solid #00D2BE;">';
+  html += '<h3><span class="team-tag team-mercedes">Mercedes</span> 动力之王 · 统治开局</h3>';
+  html += '<div style="font-size:0.82rem;color:var(--f1-text);line-height:1.8;">';
+  html += '<strong>✅ 优势</strong><br>';
+  html += '• 动力单元全场最强——极速 333 km/h，能量部署效率无可匹敌<br>';
+  html += '• MGU-K 部署持续时间最长，clipping（能量削减）幅度最小<br>';
+  html += '• 排位赛平均领先法拉利 0.56 秒，开局三站碾压级优势<br>';
+  html += '• 变速箱内置阻尼系统，减少换挡冲击提升可靠性<br><br>';
+  html += '<strong>⚠️ 劣势</strong><br>';
+  html += '• 发车/起步偏弱，常被法拉利在比赛初期迫近<br>';
+  html += '• 高速弯道灵活度不足——蒙特利尔最快弯道全场最慢<br>';
+  html += '• 升级策略保守，迈阿密仅带 2 项小改，正赛优势缩至 0.02 秒<br>';
+  html += '• 优势正被快速蚕食，赛季中大型升级包成关键拐点';
+  html += '</div></div>';
+
+  // Ferrari
+  html += '<div class="tech-card" style="margin-bottom:14px;border-left:4px solid #DC0000;">';
+  html += '<h3><span class="team-tag team-ferrari">Ferrari</span> 弯道之王 · 动力待破局</h3>';
+  html += '<div style="font-size:0.82rem;color:var(--f1-text);line-height:1.8;">';
+  html += '<strong>✅ 优势</strong><br>';
+  html += '• 高速弯道全场最佳——蒙特利尔 141 km/h 过弯，比 Mercedes 快 4 km/h<br>';
+  html += '• 更小涡轮设计 → 涡轮迟滞极低，低速响应和起步性能出色<br>';
+  html += '• 「Macarena」翻转尾翼：直道上完全反转翼型，创新主动空力方案<br>';
+  html += '• 扩散器延伸车身 + 气流转向叶片，提升尾部下压力<br><br>';
+  html += '<strong>⚠️ 劣势</strong><br>';
+  html += '• 直道极速和电池部署不如 Mercedes——圈末电池耗尽时速度骤降<br>';
+  html += '• 迈阿密带来 11 项新部件（全场最多），但实际圈速改善仅 0.07 秒<br>';
+  html += '• 升级效率存疑，赛道特性调整后甚至可能倒退 0.18 秒/圈<br>';
+  html += '• 长距离节奏不稳定，策略决策偶有失误';
+  html += '</div></div>';
+
+  // McLaren
+  html += '<div class="tech-card" style="margin-bottom:14px;border-left:4px solid #FF8700;">';
+  html += '<h3><span class="team-tag team-mclaren">McLaren</span> 进步最快 · 稳健追赶</h3>';
+  html += '<div style="font-size:0.82rem;color:var(--f1-text);line-height:1.8;">';
+  html += '<strong>✅ 优势</strong><br>';
+  html += '• 全场唯一未用满 3400mm 轴距的赛车（短约 10cm），更轻更灵活<br>';
+  html += '• 拉杆前悬挂 → 前翼气流质量更优，整车空力平衡出色<br>';
+  html += '• 研发方向精准：迈阿密全新底板 + 尾翼升级，近乎整车焕新<br>';
+  html += '• 进步速度最快——从落后 1.34 秒缩至 0.29 秒/圈<br>';
+  html += '• 诺里斯 + 皮亚斯特里双人组合数据共享配合默契<br><br>';
+  html += '<strong>⚠️ 劣势</strong><br>';
+  html += '• 短轴距代价：底板下压力面积更小，理论极限不如全轴距车<br>';
+  html += '• 能量管理受限——直道末端需节省电能，极速仅 326 km/h（四强最低）<br>';
+  html += '• 客户引擎身份限制 PU 集成优化深度';
+  html += '</div></div>';
+
+  // Red Bull
+  html += '<div class="tech-card" style="margin-bottom:14px;border-left:4px solid #3671C6;">';
+  html += '<h3><span class="team-tag team-redbull">Red Bull</span> 从霸主坠落 · 反弹最快</h3>';
+  html += '<div style="font-size:0.82rem;color:var(--f1-text);line-height:1.8;">';
+  html += '<strong>✅ 优势</strong><br>';
+  html += '• 迈阿密站进步最大——正赛圈速提升 0.92 秒（赛道特性调整后 0.7 秒）<br>';
+  html += '• 座舱-前轴间距紧凑，提升前翼进气量和底板气流体积<br>';
+  html += '• 极速 329 km/h 处于中上水准<br>';
+  html += '• Verstappen 的轮胎敏感度和低抓地力驾驭能力仍是关键资产<br><br>';
+  html += '<strong>⚠️ 劣势</strong><br>';
+  html += '• 自研 RBPT 动力单元仍在学习期——clipping 量明显大于 Mercedes<br>';
+  html += '• 赛车超重 10-20 公斤，每圈损失约 0.3 秒<br>';
+  html += '• 操控平衡失控——同一周末转向不足与甩尾交替出现<br>';
+  html += '• 出慢弯牵引力不足，是圈速损失主因<br>';
+  html += '• 核心技术人才流失，设计方向摇摆（甚至"高仿法拉利翻转尾翼"）<br>';
+  html += '• 自 2015 年以来最差开局：前三站正赛平均落后 1.26 秒';
+  html += '</div></div>';
+
+  // Other teams brief
+  html += '<h2 style="margin-top:24px;">其他车队速览</h2>';
+  html += '<div class="tech-grid" style="margin-bottom:16px;">';
+  html += '<div class="tech-card"><h3><span class="team-tag team-alpine">Alpine</span></h3>';
+  html += '<p style="font-size:0.8rem;line-height:1.7;">使用雷诺自研 PU，中游领跑者。Gasly 稳定拿分但缺乏挑战前排的火力。底盘基础扎实，升级节奏偏慢。</p></div>';
+  html += '<div class="tech-card"><h3><span class="team-tag team-racingbulls">Racing Bulls</span></h3>';
+  html += '<p style="font-size:0.8rem;line-height:1.7;">红牛姊妹队，使用本田 PU。Lawson 表现稳健，18 岁新秀 Lindblad 潜力巨大。赛车借红牛技术但始终慢半拍。</p></div>';
+  html += '<div class="tech-card"><h3><span class="team-tag team-haas">Haas</span></h3>';
+  html += '<p style="font-size:0.8rem;line-height:1.7;">法拉利客户车队，Bearman 新秀年即得分。受益于法拉利出色的涡轮低扭特性。Ocon 带来经验但稳定性待提升。</p></div>';
+  html += '<div class="tech-card"><h3><span class="team-tag team-williams">Williams</span></h3>';
+  html += '<p style="font-size:0.8rem;line-height:1.7;">Mercedes 动力单元加持，Sainz 的加盟提升明显。底盘平衡有改善但仍缺下压力。Albon 至今仅得 1 分。</p></div>';
+  html += '<div class="tech-card"><h3><span class="team-tag team-astonmartin">Aston Martin</span></h3>';
+  html += '<p style="font-size:0.8rem;line-height:1.7;">Adrian Newey 出任领队，本田 PU。双车手 Alonso 和 Stroll 至今零分——赛季最令人失望的车队。底盘理念尚未融入 Newey 思路。</p></div>';
+  html += '<div class="tech-card"><h3><span class="team-tag team-audi">Audi</span> + <span class="team-tag team-cadillac">Cadillac</span></h3>';
+  html += '<p style="font-size:0.8rem;line-height:1.7;">两支全新厂队，均用法拉利 PU。Audi 2 分，Cadillac 0 分——新规元年建队期，重心在 2027-2028 竞争力而非当前积分。</p></div>';
   html += '</div>';
+
+  html += '<p style="font-size:0.72rem;color:var(--f1-muted);text-align:center;">数据来源：Motorsport.com / F1Technical / RaceFans · 更新至迈阿密站</p>';
+
   document.getElementById('tech').innerHTML = html;
 }
 
