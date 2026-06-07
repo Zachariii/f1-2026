@@ -149,15 +149,18 @@ h2 { font-family:var(--font-display); font-size:clamp(0.85rem, 2.5vw, 1rem); fon
 .standings-list { display:flex; flex-direction:column; gap:3px; margin-bottom:24px; }
 .s-row {
   display:flex; align-items:center; gap:10px;
-  background:var(--f1-card); border:1px solid transparent; border-left:3px solid var(--f1-border);
+  background:var(--f1-card); border:1px solid var(--f1-border);
   border-radius:var(--radius-sm); padding:10px 12px;
   transition:border-color var(--transition-fast),background var(--transition-fast),transform var(--transition-fast);
   min-width:0; animation:slideUp 0.3s ease backwards; cursor:default; box-shadow:var(--shadow-card);
 }
 @keyframes slideUp { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
-.s-row:hover { background:var(--f1-card-hover); border-left-color:rgba(225,6,0,0.4); transform:translateX(2px); }
-.s-row:active { border-left-color:var(--f1-red); transform:scale(0.992); }
-.s-row.s-podium { border-left-color:rgba(225,6,0,0.25); background:linear-gradient(135deg, var(--f1-card) 0%, rgba(225,6,0,0.03) 100%); }
+.s-row:hover { background:var(--f1-card-hover); border-color:rgba(255,255,255,0.04); transform:translateX(2px); }
+.s-row:active { border-color:var(--f1-border); transform:scale(0.992); }
+.s-row.s-podium { border-color:rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); }
+.s-row.s-podium:nth-child(1) { border-color:rgba(255,215,0,0.15); }
+.s-row.s-podium:nth-child(2) { border-color:rgba(200,200,208,0.1); }
+.s-row.s-podium:nth-child(3) { border-color:rgba(205,127,50,0.1); }
 .s-row .s-pos-w { width:30px; min-width:30px; height:30px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; font-size:0.78rem; flex-shrink:0; background:rgba(255,255,255,0.03); color:var(--f1-muted); }
 .s-row .s-pos-w.p1 { background:rgba(255,215,0,0.1); color:var(--gold); font-size:0.85rem; }
 .s-row .s-pos-w.p2 { background:rgba(200,200,208,0.08); color:var(--silver); }
@@ -310,6 +313,37 @@ h2 { font-family:var(--font-display); font-size:clamp(0.85rem, 2.5vw, 1rem); fon
 .h-card .hc-title { font-weight:700; font-size:0.76rem; }
 .h-card .hc-body { font-size:0.65rem; color:var(--f1-muted); line-height:1.6; }
 
+/* News */
+.news-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:10px; margin-bottom:28px; }
+@media(max-width:600px){ .news-grid{grid-template-columns:1fr;} }
+.n-card {
+  background:var(--f1-card); border:1px solid var(--f1-border); border-radius:var(--radius-md);
+  overflow:hidden; display:flex; flex-direction:column;
+  transition:border-color var(--transition-fast),transform var(--transition-fast),box-shadow var(--transition-fast);
+  box-shadow:var(--shadow-card);
+}
+.n-card:hover { border-color:rgba(225,6,0,0.15); transform:translateY(-2px); box-shadow:var(--shadow-pulse); }
+.n-card .n-img { width:100%; height:160px; object-fit:cover; background:var(--f1-border); display:block; }
+.n-card .n-body { padding:12px 14px 14px; display:flex; flex-direction:column; gap:6px; flex:1; }
+.n-card .n-title { font-weight:700; font-size:0.78rem; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.n-card .n-title a { color:var(--f1-text); text-decoration:none; transition:color var(--transition-fast); }
+.n-card .n-title a:hover { color:var(--f1-red); }
+.n-card .n-desc { font-size:0.6rem; color:var(--f1-muted); line-height:1.55; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.n-card .n-meta { display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:6px; border-top:1px solid var(--f1-border); }
+.n-card .n-date { font-family:var(--font-display); font-size:0.48rem; color:var(--f1-muted); letter-spacing:0.5px; }
+.n-card .n-cat { font-family:var(--font-display); font-size:0.45rem; color:var(--f1-red); text-transform:uppercase; letter-spacing:1px; }
+.n-card .n-source { font-size:0.5rem; color:var(--f1-muted); opacity:0.7; }
+
+.news-refresh { display:flex; align-items:center; justify-content:flex-end; gap:8px; margin-bottom:16px; }
+.news-refresh span { font-size:0.55rem; color:var(--f1-muted); font-family:var(--font-display); }
+.news-refresh button {
+  padding:5px 12px; background:none; border:1px solid var(--f1-border); border-radius:16px;
+  color:var(--f1-muted); font-size:0.55rem; cursor:pointer; font-family:var(--font-display);
+  transition:all var(--transition-fast); -webkit-tap-highlight-color:transparent;
+}
+.news-refresh button:hover { border-color:var(--f1-red); color:var(--f1-red); }
+.news-refresh .dot { width:5px; height:5px; border-radius:50%; background:var(--accent-green); display:inline-block; }
+
 /* Scrollbar */
 ::-webkit-scrollbar { width:4px; }
 ::-webkit-scrollbar-thumb { background:var(--f1-border); border-radius:2px; }
@@ -340,6 +374,7 @@ h2 { font-family:var(--font-display); font-size:clamp(0.85rem, 2.5vw, 1rem); fon
     <button class="active" data-tab="standings">积分榜</button>
     <button data-tab="calendar">赛程</button>
     <button data-tab="teams">车队</button>
+    <button data-tab="news">新闻</button>
   </div>
 </nav>
 
@@ -351,24 +386,27 @@ h2 { font-family:var(--font-display); font-size:clamp(0.85rem, 2.5vw, 1rem); fon
     <div id="calendarContent"><div class="loading-spinner"><div class="spinner"></div><p>正在加载最新赛历…</p></div></div>
   </section>
   <section id="teams" class="section"></section>
+  <section id="news" class="section">
+    <div id="newsContent"><div class="loading-spinner"><div class="spinner"></div><p>正在加载最新新闻…</p></div></div>
+  </section>
 </main>
 
-<footer class="footer">打开页面自动拉取最新数据 · <a href="https://api.jolpi.ca" target="_blank">Jolpica API</a></footer>
+<footer class="footer">数据来源 <a href="https://api.jolpi.ca" target="_blank">Jolpica API</a></footer>
 
 <script>
 // ===== DATA =====
 const TEAMS = [
-  {name:'Mercedes',pu:'Mercedes',d1:'George Russell',d1n:63,d2:'Andrea Kimi Antonelli',d2n:12,cls:'team-mercedes',id:'mercedes',nation:'德国',founded:2010,champs:8},
-  {name:'Ferrari',pu:'Ferrari',d1:'Charles Leclerc',d1n:16,d2:'Lewis Hamilton',d2n:44,cls:'team-ferrari',id:'ferrari',nation:'意大利',founded:1950,champs:16},
-  {name:'McLaren',pu:'Mercedes',d1:'Lando Norris',d1n:1,d2:'Oscar Piastri',d2n:81,cls:'team-mclaren',id:'mclaren',nation:'英国',founded:1966,champs:8},
-  {name:'Red Bull Racing',pu:'Honda',d1:'Max Verstappen',d1n:3,d2:'Isack Hadjar',d2n:6,cls:'team-redbull',id:'red_bull',nation:'奥地利',founded:2005,champs:6},
-  {name:'Aston Martin',pu:'Honda',d1:'Fernando Alonso',d1n:14,d2:'Lance Stroll',d2n:18,cls:'team-astonmartin',id:'aston_martin',nation:'英国',founded:2021,champs:0},
-  {name:'Alpine',pu:'Renault',d1:'Pierre Gasly',d1n:10,d2:'Franco Colapinto',d2n:43,cls:'team-alpine',id:'alpine',nation:'法国',founded:2021,champs:0},
-  {name:'Haas',pu:'Ferrari',d1:'Esteban Ocon',d1n:31,d2:'Oliver Bearman',d2n:87,cls:'team-haas',id:'haas',nation:'美国',founded:2016,champs:0},
-  {name:'Racing Bulls',pu:'Honda',d1:'Liam Lawson',d1n:30,d2:'Arvid Lindblad',d2n:41,cls:'team-racingbulls',id:'rb',nation:'意大利',founded:2024,champs:0},
-  {name:'Williams',pu:'Mercedes',d1:'Alex Albon',d1n:23,d2:'Carlos Sainz',d2n:55,cls:'team-williams',id:'williams',nation:'英国',founded:1977,champs:9},
-  {name:'Audi',pu:'Ferrari',d1:'Nico Hülkenberg',d1n:27,d2:'Gabriel Bortoleto',d2n:5,cls:'team-audi',id:'audi',nation:'德国',founded:2026,champs:0},
-  {name:'Cadillac',pu:'Ferrari',d1:'Sergio Pérez',d1n:11,d2:'Valtteri Bottas',d2n:77,cls:'team-cadillac',id:'cadillac',nation:'美国',founded:2026,champs:0},
+  {name:'Mercedes',pu:'Mercedes',d1:'George Russell',d1n:63,d1nat:'🇬🇧',d2:'Andrea Kimi Antonelli',d2n:12,d2nat:'🇮🇹',cls:'team-mercedes',id:'mercedes',nation:'德国',flag:'🇩🇪',founded:2010,champs:8},
+  {name:'Ferrari',pu:'Ferrari',d1:'Charles Leclerc',d1n:16,d1nat:'🇲🇨',d2:'Lewis Hamilton',d2n:44,d2nat:'🇬🇧',cls:'team-ferrari',id:'ferrari',nation:'意大利',flag:'🇮🇹',founded:1950,champs:16},
+  {name:'McLaren',pu:'Mercedes',d1:'Lando Norris',d1n:1,d1nat:'🇬🇧',d2:'Oscar Piastri',d2n:81,d2nat:'🇦🇺',cls:'team-mclaren',id:'mclaren',nation:'英国',flag:'🇬🇧',founded:1966,champs:8},
+  {name:'Red Bull Racing',pu:'Honda',d1:'Max Verstappen',d1n:3,d1nat:'🇳🇱',d2:'Isack Hadjar',d2n:6,d2nat:'🇫🇷',cls:'team-redbull',id:'red_bull',nation:'奥地利',flag:'🇦🇹',founded:2005,champs:6},
+  {name:'Aston Martin',pu:'Honda',d1:'Fernando Alonso',d1n:14,d1nat:'🇪🇸',d2:'Lance Stroll',d2n:18,d2nat:'🇨🇦',cls:'team-astonmartin',id:'aston_martin',nation:'英国',flag:'🇬🇧',founded:2021,champs:0},
+  {name:'Alpine',pu:'Renault',d1:'Pierre Gasly',d1n:10,d1nat:'🇫🇷',d2:'Franco Colapinto',d2n:43,d2nat:'🇦🇷',cls:'team-alpine',id:'alpine',nation:'法国',flag:'🇫🇷',founded:2021,champs:0},
+  {name:'Haas',pu:'Ferrari',d1:'Esteban Ocon',d1n:31,d1nat:'🇫🇷',d2:'Oliver Bearman',d2n:87,d2nat:'🇬🇧',cls:'team-haas',id:'haas',nation:'美国',flag:'🇺🇸',founded:2016,champs:0},
+  {name:'Racing Bulls',pu:'Honda',d1:'Liam Lawson',d1n:30,d1nat:'🇳🇿',d2:'Arvid Lindblad',d2n:41,d2nat:'🇬🇧',cls:'team-racingbulls',id:'rb',nation:'意大利',flag:'🇮🇹',founded:2024,champs:0},
+  {name:'Williams',pu:'Mercedes',d1:'Alex Albon',d1n:23,d1nat:'🇹🇭',d2:'Carlos Sainz',d2n:55,d2nat:'🇪🇸',cls:'team-williams',id:'williams',nation:'英国',flag:'🇬🇧',founded:1977,champs:9},
+  {name:'Audi',pu:'Ferrari',d1:'Nico Hülkenberg',d1n:27,d1nat:'🇩🇪',d2:'Gabriel Bortoleto',d2n:5,d2nat:'🇧🇷',cls:'team-audi',id:'audi',nation:'德国',flag:'🇩🇪',founded:2026,champs:0},
+  {name:'Cadillac',pu:'Ferrari',d1:'Sergio Pérez',d1n:11,d1nat:'🇲🇽',d2:'Valtteri Bottas',d2n:77,d2nat:'🇫🇮',cls:'team-cadillac',id:'cadillac',nation:'美国',flag:'🇺🇸',founded:2026,champs:0},
 ];
 
 // ===== HELPERS =====
@@ -523,18 +561,25 @@ function renderStandings() {
   var constructors = data.constructors || [];
   var leader = drivers[0] || {};
   var wins = leader.wins || 0;
+  // Count total wins across all drivers
+  var totalWins = 0;
+  for (var wi = 0; wi < drivers.length; wi++) { totalWins += drivers[wi].wins || 0; }
   var cal = currentCalendar();
   var completedRaces = 0, lastCompleted = null;
   for (var i = 0; i < cal.length; i++) { if (cal[i].done) { completedRaces++; lastCompleted = cal[i]; } }
   var totalRaces = cal.length;
   var updateText = lastCompleted ? (lastCompleted.name + ' · ' + new Date().toLocaleDateString('zh-CN')) : new Date().toLocaleDateString('zh-CN');
 
+  // Get constructor leader
+  var leaderConstructor = constructors.length ? constructors[0].team : '—';
+  var constructorWins = constructors.length ? (constructors[0].wins || 0) : 0;
+
   var html = '';
   html += '<div class="stats-row">';
-  html += '<div class="stat-card"><div class="label">2026 领跑者</div><div class="value">' + (leader.driver ? shortName(leader.driver) : '—') + '</div><div class="sub-value">' + esc(leader.team || '') + '</div></div>';
+  html += '<div class="stat-card"><div class="label">2026 赛季领跑者</div><div class="value">' + (leader.driver ? shortName(leader.driver) : '—') + '</div><div class="sub-value">' + esc(leader.team || '') + '</div></div>';
   html += '<div class="stat-card"><div class="label">积分</div><div class="value">' + (leader.points || '—') + '</div></div>';
-  html += '<div class="stat-card"><div class="label">分站冠军</div><div class="value">' + wins + '</div></div>';
-  html += '<div class="stat-card"><div class="label">剩余分站</div><div class="value">' + (totalRaces - completedRaces) + '</div></div>';
+  html += '<div class="stat-card"><div class="label">分站冠军</div><div class="value">' + wins + '</div><div class="sub-value">共 ' + completedRaces + ' 场</div></div>';
+  html += '<div class="stat-card"><div class="label">领跑车队</div><div class="value">' + esc(leaderConstructor) + '</div><div class="sub-value">' + esc(constructors[0] && constructors[0].points ? constructors[0].points + ' 分' : '') + '</div></div>';
   html += '</div>';
 
   // Compute rank changes
@@ -660,6 +705,7 @@ function raceCardHTML(r, isNext) {
 }
 
 var LOADING_RACES = {};
+var YEAR_READY = {};
 
 function toggleDetail(card) {
   var rnd = parseInt(card.getAttribute('data-round'), 10);
@@ -786,8 +832,8 @@ function renderTeams() {
     var t = TEAMS[i];
     var rank = rankMap[t.cls] || '—';
     html += '<div class="t-card" style="animation-delay:' + (i * 0.04) + 's" onclick="toggleTeamDetail(this,\'' + t.cls + '\')">';
-    html += '<div class="t-header"><span class="team-tag ' + t.cls + '">' + t.name + '</span><span class="t-rank">#' + rank + '</span></div>';
-    html += '<div class="t-drivers"><div class="t-drv"><div class="t-drv-name">' + t.d1 + '</div><div class="t-drv-num">#' + t.d1n + '</div></div><div class="t-drv"><div class="t-drv-name">' + t.d2 + '</div><div class="t-drv-num">#' + t.d2n + '</div></div></div>';
+    html += '<div class="t-header"><span class="team-tag ' + t.cls + '">' + t.name + '</span><span class="t-rank">' + (t.flag || '') + '</span></div>';
+    html += '<div class="t-drivers"><div class="t-drv"><div class="t-drv-name">' + (t.d1nat || '') + ' ' + t.d1 + '</div><div class="t-drv-num">#' + t.d1n + '</div></div><div class="t-drv"><div class="t-drv-name">' + (t.d2nat || '') + ' ' + t.d2 + '</div><div class="t-drv-num">#' + t.d2n + '</div></div></div>';
     html += '<div class="t-detail" id="td-' + t.cls + '"><div class="td-row"><span class="td-l">加载中…</span></div></div>';
     html += '<div class="t-toggle" onclick="event.stopPropagation();toggleTeamDetail(this.parentElement,\'' + t.cls + '\')">详情 <span class="t-arrow">▾</span></div>';
     html += '</div>';
@@ -817,9 +863,9 @@ function getBuiltinData() {
 function loadAll() {
   setStatus('loading', '正在拉取最新数据…');
 
-  // Load 3 years of calendar + 2026 standings in parallel
+  var years = [2026, 2025, 2024, 2023, 2022];
   var yearFetches = [];
-  for (var yi = 2022; yi <= 2026; yi++) {
+  for (var yi = 0; yi < years.length; yi++) {
     (function(y) {
       yearFetches.push(
         fetch('https://api.jolpi.ca/ergast/f1/' + y + '/races.json?limit=30')
@@ -827,9 +873,8 @@ function loadAll() {
           .then(function(json) {
             var races = json.MRData.RaceTable.Races || [];
             var now = new Date();
-            CALENDARS[y] = races.map(function(r, i) {
-              var raceDate = r.date + 'T' + (r.time || '00:00:00Z');
-              var raceDt = new Date(raceDate);
+            CALENDARS[y] = races.map(function(r) {
+              var raceDt = new Date(r.date + 'T' + (r.time || '00:00:00Z'));
               var hasSprint = !!(r.Sprint || r.SprintQualifying);
               return {
                 r: parseInt(r.round, 10),
@@ -845,42 +890,26 @@ function loadAll() {
                 sprint: hasSprint,
                 displaySprintQ: r.SprintQualifying ? fmtQualiDate(r.SprintQualifying.date, r.SprintQualifying.time) : '',
                 displaySprintR: r.Sprint ? fmtQualiDate(r.Sprint.date, r.Sprint.time) : '',
-                done: now > new Date(raceDt.getTime() + 86400000) // +1 day buffer
+                done: now > new Date(raceDt.getTime() + 86400000)
               };
             });
-            // Fetch podiums for completed races
-            var podiumPromises = [];
-            for (var ri = 0; ri < CALENDARS[y].length; ri++) {
-              if (!CALENDARS[y][ri].done) continue;
-              (function(race, idx) {
-                var round = race.r;
-                podiumPromises.push(
-                  fetch('https://api.jolpi.ca/ergast/f1/' + y + '/' + round + '/results.json')
-                    .then(function(rr) { if (!rr.ok) throw new Error(); return rr.json(); })
-                    .then(function(rj) {
-                      var rcs = rj.MRData.RaceTable.Races || [];
-                      if (rcs.length) {
-                        var rsl = rcs[0].Results || [];
-                        var pod = [];
-                        for (var pi = 0; pi < Math.min(rsl.length, 3); pi++) {
-                          pod.push(rsl[pi].Driver.givenName + ' ' + rsl[pi].Driver.familyName);
-                        }
-                        if (CALENDARS[y][idx]) CALENDARS[y][idx].podium = pod;
-                      }
-                    }).catch(function() { /* silent */ })
-                );
-              })(CALENDARS[y][ri], ri);
+            // 2026 data ready — refresh UI immediately
+            if (y === 2026 && !YEAR_READY[2026]) {
+              YEAR_READY[2026] = true;
+              CALENDAR_YEAR = 2026;
+              renderAll();
+              setStatus('', '数据已更新');
+            } else {
+              YEAR_READY[y] = true;
             }
-            return Promise.all(podiumPromises);
+            // Fetch podiums for completed races in background (non-blocking)
+            loadPodiumsInBackground(y);
           }).catch(function(err) { console.warn('Failed loading ' + y + ' calendar:', err.message); })
       );
-    })(yi);
+    })(years[yi]);
   }
 
-  var yearPromise = Promise.all(yearFetches).then(function() {
-    // Mark 2026 as default
-    CALENDAR_YEAR = 2026;
-  });
+  Promise.all(yearFetches); // wait for all but don't hold UI
 
   var standingsPromise = Promise.all([
     fetch('https://api.jolpi.ca/ergast/f1/2026/driverStandings.json').then(function(r) { return r.json(); }),
@@ -889,7 +918,7 @@ function loadAll() {
     var dList = results[0].MRData.StandingsTable.StandingsLists[0].DriverStandings || [];
     var drivers = dList.map(function(it) { return { driver: it.Driver.givenName + ' ' + it.Driver.familyName, team: it.Constructors[0].name, wins: parseInt(it.wins, 10) || 0, points: parseInt(it.points, 10) || 0 }; });
     var cList = results[1].MRData.StandingsTable.StandingsLists[0].ConstructorStandings || [];
-    var constructors = cList.map(function(it) { return { team: it.Constructor.name, points: parseInt(it.points, 10) || 0, drivers: '' }; });
+    var constructors = cList.map(function(it) { return { team: it.Constructor.name, points: parseInt(it.points, 10) || 0, wins: parseInt(it.wins, 10) || 0, drivers: '' }; });
     var tbn = {};
     TEAMS.forEach(function(t) { tbn[t.name.replace(/[^a-zA-Z]/g, '').toLowerCase()] = t; });
     constructors.forEach(function(c) {
@@ -899,11 +928,32 @@ function loadAll() {
       if (ck === 'rbf1team' && tbn['racingbulls']) { c.drivers = surname(tbn['racingbulls'].d1) + ' / ' + surname(tbn['racingbulls'].d2); c._cls = tbn['racingbulls'].cls; }
     });
     STANDINGS = { drivers: drivers, constructors: constructors };
+    renderStandings();
   }).catch(function(err) { console.warn('Jolpica API 不可用：', err.message); });
+}
 
-  Promise.all([yearPromise, standingsPromise])
-    .then(function() { setStatus('', '数据已更新'); renderAll(); })
-    .catch(function() { setStatus('stale', '部分数据来自本地'); renderAll(); });
+function loadPodiumsInBackground(y) {
+  var cal = CALENDARS[y];
+  if (!cal) return;
+  for (var ri = 0; ri < cal.length; ri++) {
+    if (!cal[ri].done) continue;
+    (function(race, idx) {
+      var round = race.r;
+      fetch('https://api.jolpi.ca/ergast/f1/' + y + '/' + round + '/results.json')
+        .then(function(rr) { if (!rr.ok) throw new Error(); return rr.json(); })
+        .then(function(rj) {
+          var rcs = rj.MRData.RaceTable.Races || [];
+          if (rcs.length) {
+            var rsl = rcs[0].Results || [];
+            var pod = [];
+            for (var pi = 0; pi < Math.min(rsl.length, 3); pi++) {
+              pod.push(rsl[pi].Driver.givenName + ' ' + rsl[pi].Driver.familyName);
+            }
+            if (CALENDARS[y][idx]) CALENDARS[y][idx].podium = pod;
+          }
+        }).catch(function() { /* silent */ });
+    })(cal[ri], ri);
+  }
 }
 
 function renderAll() { updateCountdown(); renderCalendar(); renderTeams(); renderStandings(); }
@@ -911,6 +961,7 @@ function renderAll() { updateCountdown(); renderCalendar(); renderTeams(); rende
 // Show initial data immediately (standings from builtin), then refresh when API loads
 renderAll();
 loadAll();
+loadNews();
 
 initParticles();
 updateCountdown();
@@ -967,6 +1018,160 @@ function switchCalTab(tab) {
   if (tab === 'upcoming') { document.querySelector('.cal-tabs button:first-child').classList.add('active'); }
   else { document.querySelector('.cal-tabs button:last-child').classList.add('active'); }
   document.getElementById('cal-' + tab).classList.add('active');
+}
+
+// ===== NEWS =====
+var NEWS_CACHE_KEY = 'f1_news_cache';
+var NEWS_CACHE_TS_KEY = 'f1_news_cache_ts';
+var NEWS_TTL = 600000; // 10 minutes
+var NEWS_RSS_URL = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.motorsport.com%2Frss%2Ff1%2Fnews%2F';
+var NEWS_LOADED = false;
+
+function loadNews(force) {
+  if (NEWS_LOADED && !force) return;
+  NEWS_LOADED = true;
+
+  renderNewsLoading();
+
+  // Check cache
+  var ts = localStorage.getItem(NEWS_CACHE_TS_KEY);
+  if (ts && (Date.now() - parseInt(ts, 10)) < NEWS_TTL && !force) {
+    var cached = localStorage.getItem(NEWS_CACHE_KEY);
+    if (cached) {
+      try { renderNews(JSON.parse(cached)); return; } catch(e) {}
+    }
+  }
+
+  fetch(NEWS_RSS_URL)
+    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(json) {
+      var items = (json.items || []).map(function(n) {
+        return {
+          title: n.title || '',
+          link: n.link || '',
+          desc: (n.description || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 200),
+          date: n.pubDate || '',
+          cat: (n.categories && n.categories.length) ? n.categories[0] : '',
+          img: (n.enclosure && n.enclosure.link) ? n.enclosure.link : (n.thumbnail || '')
+        };
+      });
+      localStorage.setItem(NEWS_CACHE_KEY, JSON.stringify(items));
+      localStorage.setItem(NEWS_CACHE_TS_KEY, String(Date.now()));
+      renderNews(items);
+    })
+    .catch(function(err) {
+      console.warn('News fetch failed:', err);
+      // Fallback to stale cache
+      var cached = localStorage.getItem(NEWS_CACHE_KEY);
+      if (cached) {
+        try { renderNews(JSON.parse(cached)); return; } catch(e) {}
+      }
+      renderNewsError('新闻加载失败');
+    });
+}
+
+function parseRSS(xml) {
+  var items = [];
+  // Parse RSS 2.0 XML
+  var itemRegex = /<item>([\s\S]*?)<\/item>/gi;
+  var itemMatch;
+  while ((itemMatch = itemRegex.exec(xml)) !== null) {
+    var itemXml = itemMatch[1];
+    var title = extractTag(itemXml, 'title');
+    var link = extractTag(itemXml, 'link');
+    var desc = extractTag(itemXml, 'description');
+    var pubDate = extractTag(itemXml, 'pubDate');
+    var cat = extractTag(itemXml, 'category');
+    var enclosure = extractAttr(itemXml, 'enclosure', 'url');
+
+    if (!title) continue;
+
+    // Strip HTML from description
+    var plainDesc = (desc || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    // Truncate
+    if (plainDesc.length > 200) plainDesc = plainDesc.substring(0, 200) + '…';
+
+    items.push({
+      title: title,
+      link: link || '',
+      desc: plainDesc,
+      date: pubDate || '',
+      cat: cat || '',
+      img: enclosure || ''
+    });
+  }
+  return items.slice(0, 20);
+}
+
+function extractTag(xml, tag) {
+  var re = new RegExp('<'+tag+'[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]></'+tag+'>', 'i');
+  var m = xml.match(re);
+  if (m) return m[1].trim();
+  var re2 = new RegExp('<'+tag+'[^>]*>([\\s\\S]*?)</'+tag+'>', 'i');
+  var m2 = xml.match(re2);
+  return m2 ? m2[1].trim() : '';
+}
+
+function extractAttr(xml, tag, attr) {
+  var re = new RegExp('<'+tag+'[^>]*'+attr+'="([^"]*)"', 'i');
+  var m = xml.match(re);
+  return m ? m[1] : '';
+}
+
+function renderNewsLoading() {
+  document.getElementById('newsContent').innerHTML = '<div class="loading-spinner"><div class="spinner"></div><p>正在加载最新新闻…</p></div>';
+}
+function renderNewsError(msg) {
+  document.getElementById('newsContent').innerHTML = '<div class="loading-spinner"><p style="color:var(--f1-muted);">' + esc(msg || '新闻加载失败') + '</p><button onclick="refreshNews()" style="margin-top:8px;padding:6px 16px;background:none;border:1px solid var(--f1-border);color:var(--f1-muted);border-radius:16px;cursor:pointer;font-size:0.55rem;">重试</button></div>';
+}
+
+function formatNewsDate(d) {
+  if (!d) return '';
+  try {
+    var dt = new Date(d);
+    var now = new Date();
+    var diff = now - dt;
+    if (diff < 3600000) return Math.floor(diff / 60000) + ' 分钟前';
+    if (diff < 86400000) return Math.floor(diff / 3600000) + ' 小时前';
+    if (diff < 604800000) return Math.floor(diff / 86400000) + ' 天前';
+    return dt.toLocaleDateString('zh-CN', {month:'short', day:'numeric'});
+  } catch(e) { return d; }
+}
+
+function renderNews(items) {
+  var html = '';
+  html += '<h2>F1 最新新闻</h2>';
+  html += '<div class="news-refresh"><span class="dot"></span><span>' + formatNewsDate(new Date().toISOString()) + ' 更新</span><button onclick="refreshNews()">刷新</button></div>';
+
+  if (!items || !items.length) {
+    html += '<p style="text-align:center;color:var(--f1-muted);padding:40px;">暂无新闻</p>';
+    document.getElementById('newsContent').innerHTML = html;
+    return;
+  }
+
+  html += '<div class="news-grid">';
+  for (var i = 0; i < items.length; i++) {
+    var n = items[i];
+    html += '<div class="n-card" style="animation-delay:' + (i * 0.03) + 's; animation:cardPop 0.4s ease backwards;">';
+    if (n.img) {
+      html += '<img class="n-img" src="' + esc(n.img) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">';
+    }
+    html += '<div class="n-body">';
+    html += '<div class="n-title"><a href="' + esc(n.link) + '" target="_blank" rel="noopener">' + esc(n.title) + '</a></div>';
+    if (n.desc) html += '<div class="n-desc">' + esc(n.desc) + '</div>';
+    html += '<div class="n-meta">';
+    html += '<span class="n-date">' + esc(formatNewsDate(n.date)) + '</span>';
+    if (n.cat) html += '<span class="n-cat">' + esc(n.cat) + '</span>';
+    html += '</div></div></div>';
+  }
+  html += '</div>';
+  html += '<p class="n-source">来源：Motorsport.com</p>';
+  document.getElementById('newsContent').innerHTML = html;
+}
+
+function refreshNews() {
+  NEWS_LOADED = false;
+  loadNews(true);
 }
 
 document.querySelectorAll('nav button').forEach(function(btn) {
