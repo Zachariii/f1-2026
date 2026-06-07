@@ -141,28 +141,34 @@
   /* Stats row */
   .stats-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
     margin-bottom: 24px;
+  }
+  @media (max-width: 480px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
   }
   .stat-card {
     background: linear-gradient(135deg, var(--f1-card) 0%, var(--f1-card2) 100%);
     border: 1px solid var(--f1-border);
     border-radius: 12px;
-    padding: clamp(14px, 2vw, 20px);
+    padding: clamp(10px, 2vw, 16px) clamp(8px, 2vw, 14px);
     text-align: center;
     transition: border-color 0.2s;
   }
   .stat-card .label {
-    font-size: 0.68rem;
+    font-size: 0.6rem;
     color: var(--f1-muted);
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
+    letter-spacing: 0.8px;
+    margin-bottom: 3px;
   }
   .stat-card .value {
-    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
     font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   /* Tables — polished */
@@ -667,7 +673,7 @@ function renderStandings() {
 
   var html = '';
   html += '<div class="stats-row">';
-  html += '<div class="stat-card"><div class="label">领跑者</div><div class="value">' + esc(leader.driver || '—') + '</div></div>';
+  html += '<div class="stat-card"><div class="label">2026 领跑者</div><div class="value">' + (leader.driver ? shortName(leader.driver) : '—') + '</div><div style="font-size:0.55rem;color:var(--f1-muted);margin-top:1px;">' + esc(leader.team || '') + '</div></div>';
   html += '<div class="stat-card"><div class="label">积分</div><div class="value">' + (leader.points || '—') + '</div></div>';
   html += '<div class="stat-card"><div class="label">分站冠军</div><div class="value">' + wins + '</div></div>';
   html += '<div class="stat-card"><div class="label">剩余分站</div><div class="value">' + (totalRaces - completedRaces) + '</div></div>';
@@ -718,6 +724,11 @@ function renderStandings() {
 
 function posClass(i) { return i === 1 ? 'pos-1' : i === 2 ? 'pos-2' : i === 3 ? 'pos-3' : ''; }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function shortName(s) {
+  // Return last name only
+  var parts = String(s).split(' ');
+  return parts[parts.length - 1];
+}
 
 function renderCalendar() {
   var upcoming = [];
