@@ -223,6 +223,58 @@
   .team-cadillac { background: #1A1A2E; color: #E0C068; border: 1px solid #E0C068; }
   .team-astonmartin { background: #006F62; color: #fff; }
 
+  /* Team cards */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 600px) {
+    .team-grid { grid-template-columns: 1fr; }
+  }
+  .team-card {
+    background: linear-gradient(160deg, var(--f1-card) 0%, var(--f1-card2) 100%);
+    border: 1px solid var(--f1-border);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: border-color 0.2s, transform 0.1s;
+  }
+  .team-card:active { border-color: var(--f1-red); transform: scale(0.98); }
+  .team-card .team-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .team-card .team-card-drivers {
+    display: flex;
+    gap: 8px;
+  }
+  .team-card .team-driver {
+    flex: 1;
+    background: rgba(0,0,0,0.15);
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+    min-width: 0;
+  }
+  .team-card .driver-name {
+    font-weight: 700;
+    font-size: 0.78rem;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .team-card .driver-num {
+    font-size: 0.6rem;
+    margin-top: 2px;
+  }
+
   /* Calendar */
   .calendar-grid {
     display: grid;
@@ -449,7 +501,23 @@
 <script>
 // ===== DATA =====
 
-const CALENDAR = [
+// TEAMS stays inline — only changes once a season
+const TEAMS = [
+  {name:'Mercedes',pu:'Mercedes',d1:'George Russell',d1n:63,d2:'Andrea Kimi Antonelli',d2n:12,cls:'team-mercedes'},
+  {name:'Ferrari',pu:'Ferrari',d1:'Charles Leclerc',d1n:16,d2:'Lewis Hamilton',d2n:44,cls:'team-ferrari'},
+  {name:'McLaren',pu:'Mercedes',d1:'Lando Norris',d1n:1,d2:'Oscar Piastri',d2n:81,cls:'team-mclaren'},
+  {name:'Red Bull Racing',pu:'Honda',d1:'Max Verstappen',d1n:3,d2:'Isack Hadjar',d2n:6,cls:'team-redbull'},
+  {name:'Aston Martin',pu:'Honda',d1:'Fernando Alonso',d1n:14,d2:'Lance Stroll',d2n:18,cls:'team-astonmartin'},
+  {name:'Alpine',pu:'Renault',d1:'Pierre Gasly',d1n:10,d2:'Franco Colapinto',d2n:43,cls:'team-alpine'},
+  {name:'Haas',pu:'Ferrari',d1:'Esteban Ocon',d1n:31,d2:'Oliver Bearman',d2n:87,cls:'team-haas'},
+  {name:'Racing Bulls',pu:'Honda',d1:'Liam Lawson',d1n:30,d2:'Arvid Lindblad 🆕',d2n:41,cls:'team-racingbulls'},
+  {name:'Williams',pu:'Mercedes',d1:'Alex Albon',d1n:23,d2:'Carlos Sainz',d2n:55,cls:'team-williams'},
+  {name:'Audi 🆕',pu:'Ferrari',d1:'Nico Hülkenberg',d1n:27,d2:'Gabriel Bortoleto',d2n:5,cls:'team-audi'},
+  {name:'Cadillac 🆕',pu:'Ferrari',d1:'Sergio Pérez',d1n:11,d2:'Valtteri Bottas',d2n:77,cls:'team-cadillac'},
+];
+
+// Built-in fallback — used if data.json cannot be fetched
+var BUILTIN_CALENDAR = [
   {r:1,flag:'🇦🇺',name:'澳大利亚大奖赛',en:'Australian GP', date:'3月8日',venue:'墨尔本',track:'阿尔伯特公园赛道',time:'12:00',quali:'3月7日 13:00',done:true,podium:['Andrea Kimi Antonelli','George Russell','Charles Leclerc']},
   {r:2,flag:'🇨🇳',name:'中国大奖赛',en:'Chinese GP',      date:'3月15日',venue:'上海',track:'上海国际赛车场',time:'15:00',quali:'3月14日 15:00',done:true,sprint:true,sprintQuali:'3月13日 15:30',sprintRace:'3月14日 11:00',podium:['Andrea Kimi Antonelli','Charles Leclerc','George Russell']},
   {r:3,flag:'🇯🇵',name:'日本大奖赛',en:'Japanese GP',      date:'3月29日',venue:'铃鹿',track:'铃鹿赛道',time:'13:00',quali:'3月28日 14:00',done:true,podium:['Andrea Kimi Antonelli','Lewis Hamilton','Lando Norris']},
@@ -476,24 +544,12 @@ const CALENDAR = [
   {r:24,flag:'🇦🇪',name:'阿布扎比大奖赛',en:'Abu Dhabi GP',      date:'12月6日',venue:'亚斯码头',track:'亚斯码头赛道',time:'21:00',quali:'12月5日 22:00'},
 ];
 
-const TEAMS = [
-  {name:'Mercedes',pu:'Mercedes',d1:'George Russell',d1n:63,d2:'Andrea Kimi Antonelli',d2n:12,cls:'team-mercedes'},
-  {name:'Ferrari',pu:'Ferrari',d1:'Charles Leclerc',d1n:16,d2:'Lewis Hamilton',d2n:44,cls:'team-ferrari'},
-  {name:'McLaren',pu:'Mercedes',d1:'Lando Norris',d1n:1,d2:'Oscar Piastri',d2n:81,cls:'team-mclaren'},
-  {name:'Red Bull Racing',pu:'Honda',d1:'Max Verstappen',d1n:3,d2:'Isack Hadjar',d2n:6,cls:'team-redbull'},
-  {name:'Aston Martin',pu:'Honda',d1:'Fernando Alonso',d1n:14,d2:'Lance Stroll',d2n:18,cls:'team-astonmartin'},
-  {name:'Alpine',pu:'Renault',d1:'Pierre Gasly',d1n:10,d2:'Franco Colapinto',d2n:43,cls:'team-alpine'},
-  {name:'Haas',pu:'Ferrari',d1:'Esteban Ocon',d1n:31,d2:'Oliver Bearman',d2n:87,cls:'team-haas'},
-  {name:'Racing Bulls',pu:'Honda',d1:'Liam Lawson',d1n:30,d2:'Arvid Lindblad 🆕',d2n:41,cls:'team-racingbulls'},
-  {name:'Williams',pu:'Mercedes',d1:'Alex Albon',d1n:23,d2:'Carlos Sainz',d2n:55,cls:'team-williams'},
-  {name:'Audi 🆕',pu:'Ferrari',d1:'Nico Hülkenberg',d1n:27,d2:'Gabriel Bortoleto',d2n:5,cls:'team-audi'},
-  {name:'Cadillac 🆕',pu:'Ferrari',d1:'Sergio Pérez',d1n:11,d2:'Valtteri Bottas',d2n:77,cls:'team-cadillac'},
-];
-
 // ===== HELPERS =====
 
-const CACHE_KEY = 'f1_2026_cache';
-const CACHE_TTL = 60 * 60 * 1000;
+// Dynamic CALENDAR + STANDINGS — overwritten by fetch if data.json loads
+var CALENDAR = BUILTIN_CALENDAR;
+var STANDINGS = null;
+var DATA_TS = null;
 
 function setStatus(state, text) {
   var dot = document.getElementById('refreshDot');
@@ -501,22 +557,6 @@ function setStatus(state, text) {
   if (state === 'loading') dot.classList.add('loading');
   else if (state === 'stale') dot.classList.add('stale');
   document.getElementById('refreshLabel').textContent = text;
-}
-
-function getCache() {
-  try {
-    var raw = localStorage.getItem(CACHE_KEY);
-    if (!raw) return null;
-    var cache = JSON.parse(raw);
-    if (Date.now() - cache.ts > CACHE_TTL) return null;
-    return cache.data;
-  } catch(e) { return null; }
-}
-
-function setCache(data) {
-  try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data }));
-  } catch(e) {}
 }
 
 // ===== RENDER =====
@@ -531,7 +571,8 @@ function getTeamCls(teamName) {
   return t ? t.cls : '';
 }
 
-function renderStandings(data) {
+function renderStandings() {
+  var data = STANDINGS || getBuiltinData().standings;
   var drivers = data.drivers || [];
   var constructors = data.constructors || [];
   var leader = drivers[0] || {};
@@ -586,6 +627,8 @@ function renderStandings(data) {
 
   document.getElementById('standingsContent').innerHTML = html;
 }
+
+// ===== MAIN =====
 
 function posClass(i) { return i === 1 ? 'pos-1' : i === 2 ? 'pos-2' : i === 3 ? 'pos-3' : ''; }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -668,18 +711,28 @@ function renderCalendar() {
 }
 
 function renderTeams() {
-  var html = '<h2>车队与车手阵容</h2><div class="table-wrap"><table>';
-  html += '<thead><tr><th>车队</th><th>动力单元</th><th>车手 1</th><th>车手 2</th></tr></thead><tbody>';
+  var html = '<h2>车队与车手阵容</h2>';
+  html += '<div class="team-grid">';
   for (var i = 0; i < TEAMS.length; i++) {
     var t = TEAMS[i];
-    html += '<tr>';
-    html += '<td><strong>' + t.name + '</strong></td>';
-    html += '<td>' + t.pu + '</td>';
-    html += '<td>' + t.d1 + ' <span style="color:var(--f1-muted);font-size:0.65rem;">#' + t.d1n + '</span></td>';
-    html += '<td>' + t.d2 + ' <span style="color:var(--f1-muted);font-size:0.65rem;">#' + t.d2n + '</span></td>';
-    html += '</tr>';
+    html += '<div class="team-card">';
+    html += '<div class="team-card-header">';
+    html += '<span class="team-tag ' + t.cls + '">' + t.name + '</span>';
+    html += '<span style="font-size:0.6rem;color:var(--f1-muted);">' + t.pu + ' PU</span>';
+    html += '</div>';
+    html += '<div class="team-card-drivers">';
+    html += '<div class="team-driver">';
+    html += '<div class="driver-name">' + t.d1 + '</div>';
+    html += '<div class="driver-num" style="color:var(--f1-muted);">#' + t.d1n + '</div>';
+    html += '</div>';
+    html += '<div class="team-driver">';
+    html += '<div class="driver-name">' + t.d2 + '</div>';
+    html += '<div class="driver-num" style="color:var(--f1-muted);">#' + t.d2n + '</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
   }
-  html += '</tbody></table></div>';
+  html += '</div>';
 
   html += '<h2>阵容亮点</h2><div class="tech-grid">';
   html += '<div class="tech-card"><h3>🆕 唯一新秀</h3><p style="font-size:0.82rem;line-height:1.7;">18 岁的 Arvid Lindblad (Racing Bulls) 是从 F2 直接晋升的唯一新秀车手。</p></div>';
@@ -811,10 +864,13 @@ function renderTech() {
 }
 
 // ===== DATA (updated manually after each race) =====
+// Fallback data — used if data.json fetch fails
+// Update data.json instead; this is only a safety net
 // Last update: 2026-05-24 — Canadian GP
 
 function getBuiltinData() {
   return {
+    standings: {
     drivers: [
       {driver:'Andrea Kimi Antonelli',nat:'IT',team:'Mercedes',wins:4,points:131},
       {driver:'George Russell',nat:'GB',team:'Mercedes',wins:1,points:88},
@@ -852,21 +908,107 @@ function getBuiltinData() {
       {team:'Cadillac',drivers:'Pérez / Bottas',points:0},
       {team:'Aston Martin',drivers:'Alonso / Stroll',points:0},
     ]
+    }
   };
 }
 
 // ===== MAIN =====
 
-function loadStandings() {
-  var data = getBuiltinData();
-  renderStandings(data);
-  setStatus('', '数据更新至' + new Date().toLocaleDateString('zh-CN'));
+function loadAll() {
+  setStatus('loading', '正在拉取最新数据…');
+
+  // 1. load calendar from data.json (Chinese names, flags, podium info)
+  // 2. load standings from Jolpica F1 API (live, auto-updated after each race)
+  // 3. if any fails, use built-in fallback
+
+  var calendarPromise = fetch('data.json')
+    .then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function(json) {
+      if (json.calendar && json.calendar.length) CALENDAR = json.calendar;
+    })
+    .catch(function(err) {
+      console.warn('data.json 不可用，使用内置赛历：', err.message);
+    });
+
+  var standingsPromise = Promise.all([
+    fetch('https://api.jolpi.ca/ergast/f1/2026/driverStandings.json').then(function(r) { return r.json(); }),
+    fetch('https://api.jolpi.ca/ergast/f1/2026/constructorStandings.json').then(function(r) { return r.json(); })
+  ])
+    .then(function(results) {
+      // Parse Jolpica / Ergast driver standings
+      var dList = results[0].MRData.StandingsTable.StandingsLists[0].DriverStandings || [];
+      var drivers = dList.map(function(item) {
+        return {
+          driver: item.Driver.givenName + ' ' + item.Driver.familyName,
+          team: item.Constructors[0].name,
+          wins: parseInt(item.wins, 10) || 0,
+          points: parseInt(item.points, 10) || 0
+        };
+      });
+
+      // Parse Jolpica / Ergast constructor standings
+      var cList = results[1].MRData.StandingsTable.StandingsLists[0].ConstructorStandings || [];
+      var constructors = cList.map(function(item) {
+        return {
+          team: item.Constructor.name,
+          points: parseInt(item.points, 10) || 0,
+          drivers: ''
+        };
+      });
+
+      // Map API team names to our TEAMS array for driver lineups
+      TEAMS.forEach(function(t) {
+        var key = t.name.toLowerCase().replace(/[^a-z]/g,'');
+        constructors.forEach(function(c) {
+          var ck = c.team.toLowerCase().replace(/[^a-z]/g,'');
+          if (ck === key || (ck.indexOf(key) !== -1) || (key.indexOf(ck) !== -1)) {
+            c.drivers = t.d1.split(' ').pop() + ' / ' + t.d2.split(' ').pop();
+          }
+        });
+        // Special mappings
+        if (t.cls === 'team-redbull' || t.cls === 'team-racingbulls') {
+          constructors.forEach(function(c) {
+            var ck = c.team.toLowerCase().replace(/[^a-z]/g,'');
+            if (c.team === 'Red Bull' && t.cls === 'team-redbull') {
+              c.drivers = t.d1.split(' ').pop() + ' / ' + t.d2.split(' ').pop();
+            }
+            if (ck.indexOf('rb') !== -1 && t.cls === 'team-racingbulls') {
+              c.drivers = t.d1.split(' ').pop() + ' / ' + t.d2.split(' ').pop();
+            }
+          });
+        }
+      });
+
+      STANDINGS = { drivers: drivers, constructors: constructors };
+      DATA_TS = results[0].MRData.StandingsTable.StandingsLists[0].round || '';
+    })
+    .catch(function(err) {
+      console.warn('Jolpica API 不可用，使用内置积分榜：', err.message);
+    });
+
+  Promise.all([calendarPromise, standingsPromise])
+    .then(function() {
+      setStatus('', '数据已更新');
+      renderAll();
+    })
+    .catch(function() {
+      setStatus('stale', '部分数据来自本地');
+      renderAll();
+    });
 }
 
-renderCalendar();
-renderTeams();
-renderTech();
-loadStandings();
+function renderAll() {
+  renderCalendar();
+  renderTeams();
+  renderTech();
+  renderStandings();
+}
+
+// Kick off — fetch data.json then render
+loadAll();
 
 // Tab switching
 document.querySelectorAll('nav button').forEach(function(btn) {
