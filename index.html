@@ -199,9 +199,88 @@
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: rgba(255,255,255,0.02); }
   tr:active td { background: rgba(225,6,0,0.06); }
-  .pos-1 { color: var(--gold); font-weight: 800; }
-  .pos-2 { color: var(--silver); font-weight: 700; }
-  .pos-3 { color: var(--bronze); font-weight: 700; }
+  /* Standings list — responsive card rows */
+  .standings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 22px;
+  }
+  .standings-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(26,26,38,0.8) 0%, rgba(31,31,46,0.6) 100%);
+    border: 1px solid rgba(42,42,62,0.5);
+    border-radius: 10px;
+    padding: 10px 12px;
+    transition: border-color 0.2s, background 0.2s, transform 0.1s;
+    min-width: 0;
+    backdrop-filter: blur(4px);
+  }
+  .standings-row:active { border-color: var(--f1-red); transform: scale(0.99); }
+  .standings-row.s-top3 {
+    background: linear-gradient(135deg, rgba(225,6,0,0.06) 0%, rgba(26,26,38,0.9) 100%);
+    border-color: rgba(225,6,0,0.12);
+  }
+  .standings-row .s-pos {
+    width: 30px; min-width: 30px; height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.04);
+    color: var(--f1-muted);
+  }
+  .standings-row .s-pos.pos-1 { background: rgba(255,215,0,0.12); color: var(--gold); }
+  .standings-row .s-pos.pos-2 { background: rgba(192,192,192,0.1); color: var(--silver); }
+  .standings-row .s-pos.pos-3 { background: rgba(205,127,50,0.1); color: var(--bronze); }
+  .standings-row .s-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .standings-row .s-name {
+    font-weight: 700;
+    font-size: 0.78rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .standings-row .s-team {
+    font-size: 0.6rem;
+    color: var(--f1-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .standings-row .s-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .standings-row .s-wins {
+    font-size: 0.6rem;
+    color: var(--f1-muted);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .standings-row .s-pts {
+    font-weight: 800;
+    font-size: 0.95rem;
+    text-align: right;
+    min-width: 38px;
+  }
+  .s-pos.pos-1 { background: rgba(255,215,0,0.12); color: var(--gold); }
+  .s-pos.pos-2 { background: rgba(192,192,192,0.1); color: var(--silver); }
+  .s-pos.pos-3 { background: rgba(205,127,50,0.1); color: var(--bronze); }
 
   .team-tag {
     display: inline-block;
@@ -578,14 +657,10 @@ function renderStandings() {
   var leader = drivers[0] || {};
   var wins = leader.wins || 0;
 
-  // Compute from CALENDAR — always accurate as long as data is updated
   var completedRaces = 0;
   var lastCompleted = null;
   for (var i = 0; i < CALENDAR.length; i++) {
-    if (CALENDAR[i].done) {
-      completedRaces++;
-      lastCompleted = CALENDAR[i];
-    }
+    if (CALENDAR[i].done) { completedRaces++; lastCompleted = CALENDAR[i]; }
   }
   var totalRaces = CALENDAR.length;
   var updateText = lastCompleted ? (lastCompleted.name + ' · ' + new Date().toLocaleDateString('zh-CN')) : new Date().toLocaleDateString('zh-CN');
@@ -598,30 +673,41 @@ function renderStandings() {
   html += '<div class="stat-card"><div class="label">剩余分站</div><div class="value">' + (totalRaces - completedRaces) + '</div></div>';
   html += '</div>';
 
-  html += '<h2>车手积分榜</h2><div class="table-wrap"><table>';
-  html += '<thead><tr><th>#</th><th>车手</th><th>车队</th><th>🏆 冠军</th><th>积分</th></tr></thead><tbody>';
+  // Driver standings — card rows
+  html += '<h2>车手积分榜</h2><div class="standings-list">';
   for (var i = 0; i < drivers.length; i++) {
     var d = drivers[i];
     var pcls = i < 3 ? ' pos-' + (i + 1) : '';
-    html += '<tr><td class="' + pcls + '">' + (i + 1) + '</td>';
-    html += '<td><strong>' + esc(d.driver) + '</strong></td>';
-    html += '<td><span class="team-tag ' + getTeamCls(d.team) + '">' + esc(d.team) + '</span></td>';
-    html += '<td>' + (d.wins || 0) + '</td>';
-    html += '<td><strong>' + esc(d.points) + '</strong></td></tr>';
+    html += '<div class="standings-row' + (i < 3 ? ' s-top3' : '') + '">';
+    html += '<div class="s-pos' + pcls + '">' + (i + 1) + '</div>';
+    html += '<div class="s-info">';
+    html += '<div class="s-name">' + esc(d.driver) + '</div>';
+    html += '<div class="s-team">' + esc(d.team) + '</div>';
+    html += '</div>';
+    html += '<div class="s-meta">';
+    html += '<div class="s-wins">🏆 ' + (d.wins || 0) + '</div>';
+    html += '<div class="s-pts">' + esc(d.points) + '</div>';
+    html += '</div>';
+    html += '</div>';
   }
-  html += '</tbody></table></div>';
+  html += '</div>';
 
-  html += '<h2>车队积分榜</h2><div class="table-wrap"><table>';
-  html += '<thead><tr><th>#</th><th>车队</th><th>车手阵容</th><th>积分</th></tr></thead><tbody>';
+  // Constructor standings — card rows
+  html += '<h2>车队积分榜</h2><div class="standings-list">';
   for (var j = 0; j < constructors.length; j++) {
     var c = constructors[j];
-    var pc = j < 3 ? ' pos-' + (j + 1) : '';
-    html += '<tr><td class="' + pc + '">' + (j + 1) + '</td>';
-    html += '<td><strong>' + esc(c.team) + '</strong></td>';
-    html += '<td>' + esc(c.drivers || '') + '</td>';
-    html += '<td><strong>' + esc(c.points) + '</strong></td></tr>';
+    var pcls2 = j < 3 ? ' pos-' + (j + 1) : '';
+    var tCls = c._cls || getTeamCls(c.team);
+    html += '<div class="standings-row' + (j < 3 ? ' s-top3' : '') + '">';
+    html += '<div class="s-pos' + pcls2 + '">' + (j + 1) + '</div>';
+    html += '<div class="s-info">';
+    html += '<div class="s-name">' + (tCls ? '<span class="team-tag ' + tCls + '" style="display:inline;padding:1px 6px;">' + esc(c.team) + '</span>' : esc(c.team)) + '</div>';
+    html += '<div class="s-team">' + esc(c.drivers || '') + '</div>';
+    html += '</div>';
+    html += '<div class="s-pts" style="min-width:44px;">' + esc(c.points) + '</div>';
+    html += '</div>';
   }
-  html += '</tbody></table></div>';
+  html += '</div>';
 
   html += '<p style="font-size:0.68rem;color:var(--f1-muted);text-align:center;margin-top:8px;">数据更新至 ' + updateText + ' · 本页生成于 ' + new Date().toLocaleString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}) + '</p>';
 
@@ -960,27 +1046,39 @@ function loadAll() {
       });
 
       // Map API team names to our TEAMS array for driver lineups
-      TEAMS.forEach(function(t) {
-        var key = t.name.toLowerCase().replace(/[^a-z]/g,'');
-        constructors.forEach(function(c) {
-          var ck = c.team.toLowerCase().replace(/[^a-z]/g,'');
-          if (ck === key || (ck.indexOf(key) !== -1) || (key.indexOf(ck) !== -1)) {
-            c.drivers = t.d1.split(' ').pop() + ' / ' + t.d2.split(' ').pop();
-          }
-        });
-        // Special mappings
-        if (t.cls === 'team-redbull' || t.cls === 'team-racingbulls') {
-          constructors.forEach(function(c) {
-            var ck = c.team.toLowerCase().replace(/[^a-z]/g,'');
-            if (c.team === 'Red Bull' && t.cls === 'team-redbull') {
-              c.drivers = t.d1.split(' ').pop() + ' / ' + t.d2.split(' ').pop();
-            }
-            if (ck.indexOf('rb') !== -1 && t.cls === 'team-racingbulls') {
-              c.drivers = t.d1.split(' ').pop() + ' / ' + t.d2.split(' ').pop();
-            }
-          });
-        }
-      });
+  var teamMapByName = {};
+  TEAMS.forEach(function(t) {
+    var clean = t.name.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    teamMapByName[clean] = t;
+  });
+
+  constructors.forEach(function(c) {
+    var ck = c.team.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    // Direct match first
+    if (teamMapByName[ck]) {
+      c.drivers = teamMapByName[ck].d1.split(' ').pop() + ' / ' + teamMapByName[ck].d2.split(' ').pop();
+      c._cls = teamMapByName[ck].cls;
+      return;
+    }
+    // Fuzzy: check if any team name contains the constructor name
+    for (var tKey in teamMapByName) {
+      if (tKey.indexOf(ck) !== -1 || ck.indexOf(tKey) !== -1) {
+        c.drivers = teamMapByName[tKey].d1.split(' ').pop() + ' / ' + teamMapByName[tKey].d2.split(' ').pop();
+        c._cls = teamMapByName[tKey].cls;
+        return;
+      }
+    }
+    // Heuristic for Racing Bulls / RB
+    if (ck === 'rbf1team' && teamMapByName['racingbulls']) {
+      c.drivers = teamMapByName['racingbulls'].d1.split(' ').pop() + ' / ' + teamMapByName['racingbulls'].d2.split(' ').pop();
+      c._cls = teamMapByName['racingbulls'].cls;
+    }
+    // Heuristic for Red Bull
+    if (ck.indexOf('redbull') !== -1 && teamMapByName['redbullracing']) {
+      c.drivers = teamMapByName['redbullracing'].d1.split(' ').pop() + ' / ' + teamMapByName['redbullracing'].d2.split(' ').pop();
+      c._cls = teamMapByName['redbullracing'].cls;
+    }
+  });
 
       STANDINGS = { drivers: drivers, constructors: constructors };
       DATA_TS = results[0].MRData.StandingsTable.StandingsLists[0].round || '';
