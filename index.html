@@ -107,11 +107,14 @@ nav button {
 }
 nav button:hover { color:var(--f1-text); }
 nav button:active { background:rgba(255,255,255,0.02); }
-nav button.active { color:#fff; border-bottom-color:var(--f1-red); }
-nav button.active::after {
-  content:''; position:absolute; bottom:-1px; left:50%; transform:translateX(-50%);
-  width:24px; height:2px; background:var(--f1-red); border-radius:1px;
+nav button { position:relative; }
+nav button::before {
+  content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+  width:0; height:2px; background:var(--f1-red); border-radius:1px;
+  transition:width var(--transition-fast);
 }
+nav button.active { color:#fff; }
+nav button.active::before { width:24px; }
 
 .container { max-width:920px; margin:0 auto; padding:clamp(22px, 3.5vw, 34px) 16px; position:relative; z-index:1; }
 .section { display:none; }
@@ -391,7 +394,7 @@ h2 { font-family:var(--font-display); font-size:clamp(0.85rem, 2.5vw, 1rem); fon
   </section>
 </main>
 
-<footer class="footer">数据来源 <a href="https://api.jolpi.ca" target="_blank">Jolpica API</a></footer>
+<footer class="footer">F1 数据来源 <a href="https://api.jolpi.ca" target="_blank">Jolpica API</a> · 新闻来源 <a href="https://www.motorsport.com/rss/f1/news/" target="_blank">Motorsport.com</a></footer>
 
 <script>
 // ===== DATA =====
@@ -621,7 +624,6 @@ function renderStandings() {
 function renderCalendar() {
   var cal = currentCalendar();
   var upcoming = [], completed = [];
-  var now = new Date();
   for (var i = 0; i < cal.length; i++) {
     if (cal[i].done) completed.push(cal[i]); else upcoming.push(cal[i]);
   }
@@ -643,6 +645,12 @@ function renderCalendar() {
     html += '<button class="year-tab' + (y === CALENDAR_YEAR ? ' active' : '') + '" onclick="switchYear(' + y + ')">' + y + '<span class="yr-status">' + status + '</span></button>';
   }
   html += '</div>';
+
+  if (!cal.length) {
+    html += '<p style="text-align:center;color:var(--f1-muted);padding:48px 0;">数据正在加载中…</p>';
+    document.getElementById('calendarContent').innerHTML = html;
+    return;
+  }
 
   html += '<h2>' + CALENDAR_YEAR + ' 赛历 · ' + cal.length + ' 站</h2>';
 
@@ -705,7 +713,6 @@ function raceCardHTML(r, isNext) {
 }
 
 var LOADING_RACES = {};
-var YEAR_READY = {};
 
 function toggleDetail(card) {
   var rnd = parseInt(card.getAttribute('data-round'), 10);
@@ -894,13 +901,11 @@ function loadAll() {
               };
             });
             // 2026 data ready — refresh UI immediately
-            if (y === 2026 && !YEAR_READY[2026]) {
-              YEAR_READY[2026] = true;
+            if (y === 2026) {
               CALENDAR_YEAR = 2026;
-              renderAll();
+              renderCalendar();
+              updateCountdown();
               setStatus('', '数据已更新');
-            } else {
-              YEAR_READY[y] = true;
             }
             // Fetch podiums for completed races in background (non-blocking)
             loadPodiumsInBackground(y);
@@ -908,8 +913,6 @@ function loadAll() {
       );
     })(years[yi]);
   }
-
-  Promise.all(yearFetches); // wait for all but don't hold UI
 
   var standingsPromise = Promise.all([
     fetch('https://api.jolpi.ca/ergast/f1/2026/driverStandings.json').then(function(r) { return r.json(); }),
@@ -930,6 +933,9 @@ function loadAll() {
     STANDINGS = { drivers: drivers, constructors: constructors };
     renderStandings();
   }).catch(function(err) { console.warn('Jolpica API 不可用：', err.message); });
+
+  // Auto-refresh standings every 10 minutes
+  setTimeout(function() { loadAll(); }, 600000);
 }
 
 function loadPodiumsInBackground(y) {
@@ -966,6 +972,15 @@ loadNews();
 initParticles();
 updateCountdown();
 setInterval(updateCountdown, 60000);
+
+// When 2026 calendar arrives, re-render the current tab in case calendar page is active
+var WATCH_CALENDAR_INTERVAL = setInterval(function() {
+  if (CALENDARS[2026] && CALENDARS[2026].length) {
+    clearInterval(WATCH_CALENDAR_INTERVAL);
+    renderCalendar();
+    updateCountdown();
+  }
+}, 300);
 
 function switchYear(y) {
   CALENDAR_YEAR = y;
@@ -1165,7 +1180,7 @@ function renderNews(items) {
     html += '</div></div></div>';
   }
   html += '</div>';
-  html += '<p class="n-source">来源：Motorsport.com</p>';
+  html += '<p class="n-source" style="text-align:center;margin-top:8px;">来源：Motorsport.com</p>';
   document.getElementById('newsContent').innerHTML = html;
 }
 
