@@ -285,6 +285,18 @@ h2 { font-family:var(--font-display); font-size:clamp(0.85rem, 2.5vw, 1rem); fon
 .cal-section { display:none; }
 .cal-section.active { display:block; animation:sectionIn 0.3s ease; }
 
+/* Year selector */
+.year-tabs { display:flex; gap:6px; margin-bottom:16px; }
+.year-tab {
+  padding:7px 16px; background:var(--f1-card); border:1px solid var(--f1-border);
+  border-radius:var(--radius-sm); color:var(--f1-muted); font-family:var(--font-display);
+  font-size:0.6rem; font-weight:700; cursor:pointer; transition:all var(--transition-fast);
+  -webkit-tap-highlight-color:transparent;
+}
+.year-tab:hover { border-color:rgba(225,6,0,0.2); color:var(--f1-text); }
+.year-tab.active { background:rgba(225,6,0,0.1); border-color:var(--f1-red); color:var(--f1-red); }
+.year-tab .yr-status { font-size:0.42rem; display:block; font-family:var(--font-body); font-weight:400; letter-spacing:0; margin-top:1px; }
+
 /* Highlight cards */
 .highlight-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px; margin-bottom:28px; }
 @media(max-width:480px){ .highlight-grid{grid-template-columns:1fr;} }
@@ -359,37 +371,69 @@ const TEAMS = [
   {name:'Cadillac',pu:'Ferrari',d1:'Sergio Pérez',d1n:11,d2:'Valtteri Bottas',d2n:77,cls:'team-cadillac',id:'cadillac',nation:'美国',founded:2026,champs:0},
 ];
 
-var BUILTIN_CALENDAR = [
-  {r:1,flag:'🇦🇺',name:'澳大利亚大奖赛',en:'Australian GP',date:'3月8日',venue:'墨尔本',track:'阿尔伯特公园赛道',time:'12:00',quali:'3月7日 13:00',done:true,podium:['Andrea Kimi Antonelli','George Russell','Charles Leclerc']},
-  {r:2,flag:'🇨🇳',name:'中国大奖赛',en:'Chinese GP',date:'3月15日',venue:'上海',track:'上海国际赛车场',time:'15:00',quali:'3月14日 15:00',done:true,sprint:true,sprintQuali:'3月13日 15:30',sprintRace:'3月14日 11:00',podium:['Andrea Kimi Antonelli','Charles Leclerc','George Russell']},
-  {r:3,flag:'🇯🇵',name:'日本大奖赛',en:'Japanese GP',date:'3月29日',venue:'铃鹿',track:'铃鹿赛道',time:'13:00',quali:'3月28日 14:00',done:true,podium:['Andrea Kimi Antonelli','Lewis Hamilton','Lando Norris']},
-  {r:4,flag:'🇧🇭',name:'巴林大奖赛',en:'Bahrain GP',date:'4月12日',venue:'萨基尔',track:'巴林国际赛道',time:'23:00',quali:'4月11日 23:00',done:true,podium:['George Russell','Charles Leclerc','Andrea Kimi Antonelli']},
-  {r:5,flag:'🇸🇦',name:'沙特阿拉伯大奖赛',en:'Saudi Arabian GP',date:'4月19日',venue:'吉达',track:'吉达滨海赛道',time:'01:00(+1)',quali:'4月18日 01:00',done:true,podium:['Andrea Kimi Antonelli','Lewis Hamilton','Oscar Piastri']},
-  {r:6,flag:'🇺🇸',name:'迈阿密大奖赛',en:'Miami GP',date:'5月3日',venue:'迈阿密',track:'迈阿密国际赛道',time:'04:00(+1)',quali:'5月2日 04:00',done:true,sprint:true,sprintQuali:'5月1日 04:30',sprintRace:'5月2日 00:00',podium:['Charles Leclerc','Andrea Kimi Antonelli','George Russell']},
-  {r:7,flag:'🇨🇦',name:'加拿大大奖赛',en:'Canadian GP',date:'5月24日',venue:'蒙特利尔',track:'吉尔斯·维伦纽夫赛道',time:'04:00(+1)',quali:'5月23日 04:00',done:true,sprint:true,sprintQuali:'5月22日 04:30',sprintRace:'5月23日 00:00',podium:['Lewis Hamilton','Charles Leclerc','Lando Norris']},
-  {r:8,flag:'🇲🇨',name:'摩纳哥大奖赛',en:'Monaco GP',date:'6月7日',venue:'蒙特卡洛',track:'蒙特卡洛赛道',time:'21:00',quali:'6月6日 22:00'},
-  {r:9,flag:'🇪🇸',name:'西班牙大奖赛',en:'Spanish GP',date:'6月14日',venue:'巴塞罗那',track:'巴塞罗那-加泰罗尼亚赛道',time:'21:00',quali:'6月13日 22:00'},
-  {r:10,flag:'🇦🇹',name:'奥地利大奖赛',en:'Austrian GP',date:'6月28日',venue:'斯皮尔伯格',track:'红牛环赛道',time:'21:00',quali:'6月27日 22:00'},
-  {r:11,flag:'🇬🇧',name:'英国大奖赛',en:'British GP',date:'7月5日',venue:'银石',track:'银石赛道',time:'22:00',quali:'7月4日 22:00',sprint:true,sprintQuali:'7月3日 23:30',sprintRace:'7月4日 18:00'},
-  {r:12,flag:'🇧🇪',name:'比利时大奖赛',en:'Belgian GP',date:'7月19日',venue:'斯帕',track:'斯帕-弗朗科尔尚赛道',time:'21:00',quali:'7月18日 22:00'},
-  {r:13,flag:'🇭🇺',name:'匈牙利大奖赛',en:'Hungarian GP',date:'7月26日',venue:'布达佩斯',track:'匈牙利赛道',time:'21:00',quali:'7月25日 22:00'},
-  {r:14,flag:'🇳🇱',name:'荷兰大奖赛',en:'Dutch GP',date:'8月23日',venue:'赞德沃特',track:'赞德沃特赛道',time:'21:00',quali:'8月22日 21:00',sprint:true,sprintQuali:'8月21日 22:30',sprintRace:'8月22日 17:00'},
-  {r:15,flag:'🇮🇹',name:'意大利大奖赛',en:'Italian GP',date:'9月6日',venue:'蒙扎',track:'蒙扎国家赛道',time:'21:00',quali:'9月5日 22:00'},
-  {r:16,flag:'🇪🇸',name:'马德里大奖赛 🆕',en:'Madrid GP 🆕',date:'9月13日',venue:'马德里',track:'马德里街道赛道',time:'21:00',quali:'9月12日 22:00'},
-  {r:17,flag:'🇦🇿',name:'阿塞拜疆大奖赛',en:'Azerbaijan GP',date:'9月27日',venue:'巴库',track:'巴库城市赛道',time:'19:00',quali:'9月26日 20:00'},
-  {r:18,flag:'🇸🇬',name:'新加坡大奖赛',en:'Singapore GP',date:'10月11日',venue:'滨海湾',track:'滨海湾街道赛道',time:'20:00',quali:'10月10日 21:00',sprint:true,sprintQuali:'10月9日 21:30',sprintRace:'10月10日 17:00'},
-  {r:19,flag:'🇺🇸',name:'美国大奖赛',en:'United States GP',date:'10月25日',venue:'奥斯汀',track:'美洲赛道',time:'04:00(+1)',quali:'10月24日 06:00'},
-  {r:20,flag:'🇲🇽',name:'墨西哥城大奖赛',en:'Mexico City GP',date:'11月1日',venue:'墨西哥城',track:'罗德里格斯兄弟赛道',time:'04:00(+1)',quali:'10月31日 05:00'},
-  {r:21,flag:'🇧🇷',name:'圣保罗大奖赛',en:'São Paulo GP',date:'11月8日',venue:'圣保罗',track:'若泽·卡洛斯·帕斯赛道',time:'01:00(+1)',quali:'11月7日 02:00'},
-  {r:22,flag:'🇺🇸',name:'拉斯维加斯大奖赛',en:'Las Vegas GP',date:'11月22日(六)',venue:'拉斯维加斯',track:'拉斯维加斯街道赛道',time:'12:00',quali:'11月21日 14:00'},
-  {r:23,flag:'🇶🇦',name:'卡塔尔大奖赛',en:'Qatar GP',date:'11月29日',venue:'卢赛尔',track:'卢赛尔国际赛道',time:'00:00(+1)',quali:'11月28日 01:00'},
-  {r:24,flag:'🇦🇪',name:'阿布扎比大奖赛',en:'Abu Dhabi GP',date:'12月6日',venue:'亚斯码头',track:'亚斯码头赛道',time:'21:00',quali:'12月5日 22:00'},
-];
-
 // ===== HELPERS =====
-var CALENDAR = BUILTIN_CALENDAR;
+// Global calendar state
+var CALENDAR_YEAR = 2026;
+var CALENDARS = {};       // year -> array of race objects
+var CAL_PODIUMS = {};     // "year-round" -> podium data
 var STANDINGS = null;
-var RACE_DETAILS = {}; // round -> { results, sprintResults, fastestLap }
+var RACE_DETAILS = {};
+
+// Country-to-flag & race name mappings
+var FLAG_MAP = {
+  'bahrain':'🇧🇭','saudi arabia':'🇸🇦','australia':'🇦🇺','japan':'🇯🇵','china':'🇨🇳',
+  'miami':'🇺🇸','usa':'🇺🇸','emilia romagna':'🇮🇹','monaco':'🇲🇨','canada':'🇨🇦',
+  'spain':'🇪🇸','austria':'🇦🇹','uk':'🇬🇧','hungary':'🇭🇺','belgium':'🇧🇪',
+  'netherlands':'🇳🇱','italy':'🇮🇹','azerbaijan':'🇦🇿','singapore':'🇸🇬',
+  'mexico':'🇲🇽','brazil':'🇧🇷','las vegas':'🇺🇸','qatar':'🇶🇦','uae':'🇦🇪',
+  'imola':'🇮🇹','abu dhabi':'🇦🇪','france':'🇫🇷','russia':'🇷🇺',
+  'portugal':'🇵🇹','turkey':'🇹🇷','india':'🇮🇳','korea':'🇰🇷','malaysia':'🇲🇾',
+  'germany':'🇩🇪','south africa':'🇿🇦','argentina':'🇦🇷'
+};
+var RACE_CN = {
+  'bahrain grand prix':'巴林大奖赛','saudi arabian grand prix':'沙特阿拉伯大奖赛',
+  'australian grand prix':'澳大利亚大奖赛','japanese grand prix':'日本大奖赛',
+  'chinese grand prix':'中国大奖赛','miami grand prix':'迈阿密大奖赛',
+  'emilia romagna grand prix':'艾米利亚-罗马涅大奖赛','monaco grand prix':'摩纳哥大奖赛',
+  'canadian grand prix':'加拿大大奖赛','spanish grand prix':'西班牙大奖赛',
+  'austrian grand prix':'奥地利大奖赛','british grand prix':'英国大奖赛',
+  'hungarian grand prix':'匈牙利大奖赛','belgian grand prix':'比利时大奖赛',
+  'dutch grand prix':'荷兰大奖赛','italian grand prix':'意大利大奖赛',
+  'azerbaijan grand prix':'阿塞拜疆大奖赛','singapore grand prix':'新加坡大奖赛',
+  'united states grand prix':'美国大奖赛','mexico city grand prix':'墨西哥城大奖赛',
+  'sao paulo grand prix':'圣保罗大奖赛','são paulo grand prix':'圣保罗大奖赛',
+  'las vegas grand prix':'拉斯维加斯大奖赛','qatar grand prix':'卡塔尔大奖赛',
+  'abu dhabi grand prix':'阿布扎比大奖赛','french grand prix':'法国大奖赛',
+  'barcelona grand prix':'西班牙大奖赛','brazilian grand prix':'巴西大奖赛',
+  'madrid grand prix':'马德里大奖赛'
+};
+function flagFor(country) {
+  var c = (country || '').toLowerCase();
+  if (FLAG_MAP[c]) return FLAG_MAP[c];
+  for (var k in FLAG_MAP) { if (c.indexOf(k) !== -1 || k.indexOf(c) !== -1) return FLAG_MAP[k]; }
+  return '🏁';
+}
+function cnFor(raceName) {
+  var r = (raceName || '').toLowerCase();
+  if (RACE_CN[r]) return RACE_CN[r];
+  for (var k in RACE_CN) { if (r.indexOf(k) !== -1 || k.indexOf(r) !== -1) return RACE_CN[k]; }
+  return raceName;
+}
+
+// Format date string for display local time
+function fmtDate(d, t) {
+  if (!d) return '';
+  var dt = new Date(d + 'T' + (t || '00:00:00'));
+  // Convert to local time (China Standard Time for zh-CN users)
+  var m = dt.getMonth() + 1, day = dt.getDate(), h = dt.getHours(), min = dt.getMinutes();
+  return m + '月' + day + '日 ' + (h < 10 ? '0' : '') + h + ':' + (min < 10 ? '0' : '') + min;
+}
+function fmtQualiDate(d, t) {
+  if (!d) return '';
+  var dt = new Date(d + 'T' + (t || '00:00:00'));
+  var m = dt.getMonth() + 1, day = dt.getDate(), h = dt.getHours(), min = dt.getMinutes();
+  return m + '月' + day + '日 ' + (h < 10 ? '0' : '') + h + ':' + (min < 10 ? '0' : '') + min;
+}
 
 function setStatus(state, text) {
   var dot = document.getElementById('refreshDot');
@@ -431,21 +475,17 @@ function initParticles() {
 function updateCountdown() {
   var el = document.getElementById('heroCountdown');
   if (!el) return;
+  var cal = currentCalendar();
   var nextRace = null;
-  for (var i = 0; i < CALENDAR.length; i++) { if (!CALENDAR[i].done) { nextRace = CALENDAR[i]; break; } }
+  for (var i = 0; i < cal.length; i++) { if (!cal[i].done) { nextRace = cal[i]; break; } }
   if (!nextRace) { el.style.display = 'none'; return; }
   el.style.display = 'inline-flex';
   document.getElementById('cdFlag').textContent = nextRace.flag || '';
-  var dStr = nextRace.date;
-  var m = dStr.match(/(\d+)月(\d+)日/);
-  if (!m) return;
-  var month = parseInt(m[1], 10), day = parseInt(m[2], 10);
-  var timeStr = nextRace.time || '21:00';
-  var tp = timeStr.match(/(\d+):(\d+)/);
-  var h = tp ? parseInt(tp[1], 10) : 21, min = tp ? parseInt(tp[2], 10) : 0;
-  var raceDate = new Date(2026, month - 1, day, h, min, 0);
+  var dStr = nextRace.raceDate;
+  var timeStr = nextRace.raceTime || '21:00';
+  var dt = new Date(dStr + 'T' + timeStr);
   var now = new Date();
-  var diff = raceDate - now;
+  var diff = dt - now;
   var timeEl = document.getElementById('cdTime');
   if (diff <= 0) {
     timeEl.textContent = '进行中';
@@ -471,6 +511,8 @@ function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt
 function shortName(s) { var p = String(s).split(' '); return p[p.length - 1]; }
 function surname(n) { var p = n.split(' '); return p[p.length - 1]; }
 
+function currentCalendar() { return CALENDARS[CALENDAR_YEAR] || []; }
+
 // ===== RENDER =====
 // Track previous standings for trend arrows
 var PREV_RANKS = {};
@@ -481,9 +523,10 @@ function renderStandings() {
   var constructors = data.constructors || [];
   var leader = drivers[0] || {};
   var wins = leader.wins || 0;
+  var cal = currentCalendar();
   var completedRaces = 0, lastCompleted = null;
-  for (var i = 0; i < CALENDAR.length; i++) { if (CALENDAR[i].done) { completedRaces++; lastCompleted = CALENDAR[i]; } }
-  var totalRaces = CALENDAR.length;
+  for (var i = 0; i < cal.length; i++) { if (cal[i].done) { completedRaces++; lastCompleted = cal[i]; } }
+  var totalRaces = cal.length;
   var updateText = lastCompleted ? (lastCompleted.name + ' · ' + new Date().toLocaleDateString('zh-CN')) : new Date().toLocaleDateString('zh-CN');
 
   var html = '';
@@ -531,27 +574,49 @@ function renderStandings() {
 }
 
 function renderCalendar() {
+  var cal = currentCalendar();
   var upcoming = [], completed = [];
-  for (var i = 0; i < CALENDAR.length; i++) {
-    if (CALENDAR[i].done) completed.push(CALENDAR[i]); else upcoming.push(CALENDAR[i]);
+  var now = new Date();
+  for (var i = 0; i < cal.length; i++) {
+    if (cal[i].done) completed.push(cal[i]); else upcoming.push(cal[i]);
   }
-  var html = '<h2>2026 赛历 · 24 站</h2>';
+  var html = '';
 
-  // Sub-tabs
+  // Year selector
+  html += '<div class="year-tabs">';
+  var years = [2026, 2025, 2024, 2023, 2022];
+  for (var yi = 0; yi < years.length; yi++) {
+    var y = years[yi];
+    var status = '';
+    if (CALENDARS[y] && CALENDARS[y].length) {
+      var doneCount = 0;
+      for (var di = 0; di < CALENDARS[y].length; di++) { if (CALENDARS[y][di].done) doneCount++; }
+      status = doneCount + '/' + CALENDARS[y].length + ' 站已完成';
+    } else {
+      status = '加载中…';
+    }
+    html += '<button class="year-tab' + (y === CALENDAR_YEAR ? ' active' : '') + '" onclick="switchYear(' + y + ')">' + y + '<span class="yr-status">' + status + '</span></button>';
+  }
+  html += '</div>';
+
+  html += '<h2>' + CALENDAR_YEAR + ' 赛历 · ' + cal.length + ' 站</h2>';
+
+  // Sub-tabs — default to "past" for completed years, "upcoming" for current year
+  var defaultTab = (upcoming.length === 0) ? 'past' : 'upcoming';
   html += '<div class="cal-tabs">';
-  html += '<button class="cal-tab active" onclick="switchCalTab(\'upcoming\')">即将举行 · ' + upcoming.length + '</button>';
-  html += '<button class="cal-tab" onclick="switchCalTab(\'past\')">已结束 · ' + completed.length + '</button>';
+  html += '<button class="cal-tab' + (defaultTab === 'upcoming' ? ' active' : '') + '" onclick="switchCalTab(\'upcoming\')">即将举行 · ' + upcoming.length + '</button>';
+  html += '<button class="cal-tab' + (defaultTab === 'past' ? ' active' : '') + '" onclick="switchCalTab(\'past\')">已结束 · ' + completed.length + '</button>';
   html += '</div>';
 
   // Upcoming section
-  html += '<div class="cal-section active" id="cal-upcoming"><div class="calendar-grid">';
+  html += '<div class="cal-section' + (defaultTab === 'upcoming' ? ' active' : '') + '" id="cal-upcoming"><div class="calendar-grid">';
   for (var u = 0; u < upcoming.length; u++) {
     html += raceCardHTML(upcoming[u], u === 0);
   }
   html += '</div></div>';
 
   // Past section
-  html += '<div class="cal-section" id="cal-past"><div class="calendar-grid">';
+  html += '<div class="cal-section' + (defaultTab === 'past' ? ' active' : '') + '" id="cal-past"><div class="calendar-grid">';
   for (var c = 0; c < completed.length; c++) {
     html += raceCardHTML(completed[c], false);
   }
@@ -563,7 +628,7 @@ function renderCalendar() {
 function raceCardHTML(r, isNext) {
   var h = '';
   h += '<div class="r-card' + (isNext ? ' next-up' : '') + (r.done ? ' completed' : '') + '" data-round="' + r.r + '" style="animation-delay:' + (r.r * 0.02) + 's">';
-  h += '<div class="r-top"><div class="r-flag">' + r.flag + '</div><div class="r-info"><div class="r-name">' + r.name + '</div><div class="r-track">' + r.en + ' · ' + r.track + '</div></div></div>';
+  h += '<div class="r-top"><div class="r-flag">' + (r.flag || '🏁') + '</div><div class="r-info"><div class="r-name">' + esc(r.name) + '</div><div class="r-track">' + esc(r.en) + ' · ' + esc(r.track) + '</div></div></div>';
   h += '<div class="r-badges">';
   if (r.done) h += '<span class="r-badge done">✓ 已完成</span>';
   else if (isNext) h += '<span class="r-badge live">● 即将</span>';
@@ -571,15 +636,15 @@ function raceCardHTML(r, isNext) {
   if (r.sprint) h += '<span class="r-badge sprint">⚡ 冲刺赛</span>';
   h += '</div>';
   h += '<div class="r-sched">';
-  h += '<div class="sl race"><span class="sl-l">🏁 正赛</span><span class="sl-t">' + r.date + ' ' + r.time + '</span></div>';
-  h += '<div class="sl quali"><span class="sl-l">⏱ 排位</span><span>' + r.quali + '</span></div>';
+  h += '<div class="sl race"><span class="sl-l">🏁 正赛</span><span class="sl-t">' + esc(r.displayDate) + '</span></div>';
+  h += '<div class="sl quali"><span class="sl-l">⏱ 排位</span><span>' + esc(r.displayQuali) + '</span></div>';
   if (r.sprint) {
-    h += '<div class="sl sprint"><span class="sl-l">⚡ 冲排</span><span>' + r.sprintQuali + '</span></div>';
-    h += '<div class="sl sprint"><span class="sl-l">🏃 冲刺</span><span>' + r.sprintRace + '</span></div>';
+    h += '<div class="sl sprint"><span class="sl-l">⚡ 冲排</span><span>' + esc(r.displaySprintQ || '') + '</span></div>';
+    h += '<div class="sl sprint"><span class="sl-l">🏃 冲刺</span><span>' + esc(r.displaySprintR || '') + '</span></div>';
   }
   h += '</div>';
 
-  // Podium for completed races (fallback)
+  // Podium
   if (r.podium && r.podium.length >= 3) {
     h += '<div class="r-podium">';
     h += '<div class="pp"><span class="r-pm gold">1</span><span class="pp-name">' + esc(r.podium[0]) + '</span></div>';
@@ -588,9 +653,7 @@ function raceCardHTML(r, isNext) {
     h += '</div>';
   }
 
-  // Detail expand section — lazy load on expand
   h += '<div class="r-detail" id="detail-' + r.r + '"></div>';
-
   h += '<div class="r-toggle" onclick="event.stopPropagation();toggleDetail(this.parentElement)">展开详情 <span class="t-arrow">▾</span></div>';
   h += '</div>';
   return h;
@@ -609,30 +672,29 @@ function toggleDetail(card) {
   var detailEl = card.querySelector('.r-detail');
   if (!detailEl || detailEl.getAttribute('data-loaded')) return;
 
-  // Already have cached data from initial load
-  if (RACE_DETAILS[rnd] && RACE_DETAILS[rnd].race) {
-    fillDetail(detailEl, rnd);
+  // Already cached from earlier
+  var key = CALENDAR_YEAR + '-' + rnd;
+  if (RACE_DETAILS[key] && RACE_DETAILS[key].race) {
+    fillDetail(detailEl, key);
     return;
   }
 
-  // Show loading state
-  if (LOADING_RACES[rnd]) return;
-  LOADING_RACES[rnd] = true;
+  if (LOADING_RACES[key]) return;
+  LOADING_RACES[key] = true;
   detailEl.innerHTML = '<div class="d-loading"><div class="d-spinner"></div>加载赛事数据…</div>';
 
-  // Lazy fetch from API
   Promise.all([
-    fetch('https://api.jolpi.ca/ergast/f1/2026/' + rnd + '/results.json').then(function(r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function() { return null; }),
-    fetch('https://api.jolpi.ca/ergast/f1/2026/' + rnd + '/qualifying.json').then(function(r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function() { return null; }),
-    fetch('https://api.jolpi.ca/ergast/f1/2026/' + rnd + '/sprint.json').then(function(r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function() { return null; })
+    fetch('https://api.jolpi.ca/ergast/f1/' + CALENDAR_YEAR + '/' + rnd + '/results.json').then(function(r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function() { return null; }),
+    fetch('https://api.jolpi.ca/ergast/f1/' + CALENDAR_YEAR + '/' + rnd + '/qualifying.json').then(function(r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function() { return null; }),
+    fetch('https://api.jolpi.ca/ergast/f1/' + CALENDAR_YEAR + '/' + rnd + '/sprint.json').then(function(r) { if (!r.ok) throw new Error(); return r.json(); }).catch(function() { return null; })
   ]).then(function(results) {
     var raceJson = results[0], qualiJson = results[1], sprintJson = results[2];
-    RACE_DETAILS[rnd] = RACE_DETAILS[rnd] || {};
+    RACE_DETAILS[key] = RACE_DETAILS[key] || {};
     if (raceJson) {
       var races = raceJson.MRData.RaceTable.Races || [];
       if (races.length) {
         var resList = races[0].Results || [];
-        RACE_DETAILS[rnd].race = resList.slice(0, 10).map(function(entry) {
+        RACE_DETAILS[key].race = resList.slice(0, 10).map(function(entry) {
           return { driver: entry.Driver.givenName + ' ' + entry.Driver.familyName, pos: entry.position, time: entry.Time ? entry.Time.time : (entry.status || '') };
         });
         var fastest = null;
@@ -640,14 +702,14 @@ function toggleDetail(card) {
           var fl = resList[j].FastestLap;
           if (fl && fl.rank === '1') { fastest = { driver: resList[j].Driver.givenName + ' ' + resList[j].Driver.familyName, time: fl.Time.time }; break; }
         }
-        RACE_DETAILS[rnd].fastestLap = fastest;
+        RACE_DETAILS[key].fastestLap = fastest;
       }
     }
     if (qualiJson) {
       var qRaces = qualiJson.MRData.RaceTable.Races || [];
       if (qRaces.length) {
         var qResults = qRaces[0].QualifyingResults || [];
-        RACE_DETAILS[rnd].quali = qResults.slice(0, 10).map(function(q) {
+        RACE_DETAILS[key].quali = qResults.slice(0, 10).map(function(q) {
           return { driver: q.Driver.givenName + ' ' + q.Driver.familyName, time: q.Q3 || q.Q2 || q.Q1 || '' };
         });
       }
@@ -656,21 +718,21 @@ function toggleDetail(card) {
       var sRaces = sprintJson.MRData.RaceTable.Races || [];
       if (sRaces.length) {
         var sResults = sRaces[0].SprintResults || [];
-        RACE_DETAILS[rnd].sprint = sResults.slice(0, 8).map(function(s) {
+        RACE_DETAILS[key].sprint = sResults.slice(0, 8).map(function(s) {
           return { driver: s.Driver.givenName + ' ' + s.Driver.familyName, time: s.Time ? s.Time.time : (s.status || '') };
         });
       }
     }
-    fillDetail(detailEl, rnd);
+    fillDetail(detailEl, key);
   }).catch(function() {
     detailEl.innerHTML = '<div class="d-block"><div class="d-info">数据加载失败</div></div>';
   }).finally(function() {
-    delete LOADING_RACES[rnd];
+    delete LOADING_RACES[key];
   });
 }
 
-function fillDetail(el, rnd) {
-  var dd = RACE_DETAILS[rnd];
+function fillDetail(el, key) {
+  var dd = RACE_DETAILS[key];
   if (!dd) return;
   var html = '';
 
@@ -755,37 +817,70 @@ function getBuiltinData() {
 function loadAll() {
   setStatus('loading', '正在拉取最新数据…');
 
-  var calendarPromise = fetch('data.json')
-    .then(function(res) { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
-    .then(function(json) {
-      if (json.calendar && json.calendar.length) {
-        CALENDAR = json.calendar;
-        // Auto-mark races as done based on race date
-        autoMarkDone();
-      }
-    })
-    .catch(function(err) { console.warn('data.json 不可用：', err.message); });
-
-function autoMarkDone() {
-  var now = new Date();
-  // Add 1 day buffer — race is "done" if its date + 1 day is in the past
-  for (var i = 0; i < CALENDAR.length; i++) {
-    var r = CALENDAR[i];
-    if (r.done) continue; // already marked
-    var dStr = r.date;
-    if (!dStr) continue;
-    // Parse Chinese date like "3月8日" or "11月22日(六)"
-    var m = dStr.match(/(\d+)月(\d+)日/);
-    if (!m) continue;
-    var month = parseInt(m[1], 10);
-    var day = parseInt(m[2], 10);
-    var raceDate = new Date(2026, month - 1, day, 23, 59, 59); // end of race day
-    raceDate.setDate(raceDate.getDate() + 1); // buffer
-    if (now > raceDate) {
-      CALENDAR[i].done = true;
-    }
+  // Load 3 years of calendar + 2026 standings in parallel
+  var yearFetches = [];
+  for (var yi = 2022; yi <= 2026; yi++) {
+    (function(y) {
+      yearFetches.push(
+        fetch('https://api.jolpi.ca/ergast/f1/' + y + '/races.json?limit=30')
+          .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
+          .then(function(json) {
+            var races = json.MRData.RaceTable.Races || [];
+            var now = new Date();
+            CALENDARS[y] = races.map(function(r, i) {
+              var raceDate = r.date + 'T' + (r.time || '00:00:00Z');
+              var raceDt = new Date(raceDate);
+              var hasSprint = !!(r.Sprint || r.SprintQualifying);
+              return {
+                r: parseInt(r.round, 10),
+                flag: flagFor(r.Circuit.Location.country),
+                name: cnFor(r.raceName),
+                en: r.raceName,
+                track: r.Circuit.circuitName,
+                venue: r.Circuit.Location.locality,
+                raceDate: r.date,
+                raceTime: r.time,
+                displayDate: fmtDate(r.date, r.time),
+                displayQuali: r.Qualifying ? fmtQualiDate(r.Qualifying.date, r.Qualifying.time) : '',
+                sprint: hasSprint,
+                displaySprintQ: r.SprintQualifying ? fmtQualiDate(r.SprintQualifying.date, r.SprintQualifying.time) : '',
+                displaySprintR: r.Sprint ? fmtQualiDate(r.Sprint.date, r.Sprint.time) : '',
+                done: now > new Date(raceDt.getTime() + 86400000) // +1 day buffer
+              };
+            });
+            // Fetch podiums for completed races
+            var podiumPromises = [];
+            for (var ri = 0; ri < CALENDARS[y].length; ri++) {
+              if (!CALENDARS[y][ri].done) continue;
+              (function(race, idx) {
+                var round = race.r;
+                podiumPromises.push(
+                  fetch('https://api.jolpi.ca/ergast/f1/' + y + '/' + round + '/results.json')
+                    .then(function(rr) { if (!rr.ok) throw new Error(); return rr.json(); })
+                    .then(function(rj) {
+                      var rcs = rj.MRData.RaceTable.Races || [];
+                      if (rcs.length) {
+                        var rsl = rcs[0].Results || [];
+                        var pod = [];
+                        for (var pi = 0; pi < Math.min(rsl.length, 3); pi++) {
+                          pod.push(rsl[pi].Driver.givenName + ' ' + rsl[pi].Driver.familyName);
+                        }
+                        if (CALENDARS[y][idx]) CALENDARS[y][idx].podium = pod;
+                      }
+                    }).catch(function() { /* silent */ })
+                );
+              })(CALENDARS[y][ri], ri);
+            }
+            return Promise.all(podiumPromises);
+          }).catch(function(err) { console.warn('Failed loading ' + y + ' calendar:', err.message); })
+      );
+    })(yi);
   }
-}
+
+  var yearPromise = Promise.all(yearFetches).then(function() {
+    // Mark 2026 as default
+    CALENDAR_YEAR = 2026;
+  });
 
   var standingsPromise = Promise.all([
     fetch('https://api.jolpi.ca/ergast/f1/2026/driverStandings.json').then(function(r) { return r.json(); }),
@@ -804,43 +899,37 @@ function autoMarkDone() {
       if (ck === 'rbf1team' && tbn['racingbulls']) { c.drivers = surname(tbn['racingbulls'].d1) + ' / ' + surname(tbn['racingbulls'].d2); c._cls = tbn['racingbulls'].cls; }
     });
     STANDINGS = { drivers: drivers, constructors: constructors };
-    // Pre-fetch podium for completed races only (lightweight)
-    var maxRound = parseInt(results[0].MRData.StandingsTable.StandingsLists[0].round || '0', 10);
-    return preloadPodiums(maxRound);
   }).catch(function(err) { console.warn('Jolpica API 不可用：', err.message); });
 
-  function preloadPodiums(maxRound) {
-    if (maxRound <= 0) return Promise.resolve();
-    var fetches = [];
-    for (var r = 1; r <= maxRound; r++) {
-      (function(rr) {
-        fetches.push(
-          fetch('https://api.jolpi.ca/ergast/f1/2026/' + rr + '/results.json')
-            .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
-            .then(function(raceJson) {
-              var races = raceJson.MRData.RaceTable.Races || [];
-              if (races.length) {
-                var resList = races[0].Results || [];
-                var podium = [];
-                for (var i = 0; i < Math.min(resList.length, 3); i++) {
-                  podium.push(resList[i].Driver.givenName + ' ' + resList[i].Driver.familyName);
-                }
-                var idx = rr - 1;
-                if (CALENDAR[idx]) CALENDAR[idx].podium = podium;
-              }
-            }).catch(function() { /* silent */ })
-        );
-      })(r);
-    }
-    return Promise.all(fetches);
-  }
-
-  Promise.all([calendarPromise, standingsPromise])
+  Promise.all([yearPromise, standingsPromise])
     .then(function() { setStatus('', '数据已更新'); renderAll(); })
     .catch(function() { setStatus('stale', '部分数据来自本地'); renderAll(); });
 }
 
 function renderAll() { updateCountdown(); renderCalendar(); renderTeams(); renderStandings(); }
+
+// Show initial data immediately (standings from builtin), then refresh when API loads
+renderAll();
+loadAll();
+
+initParticles();
+updateCountdown();
+setInterval(updateCountdown, 60000);
+
+function switchYear(y) {
+  CALENDAR_YEAR = y;
+  // Reset detail cache for current view
+  var cal = CALENDARS[y] || [];
+  renderCalendar();
+  updateCountdown();
+  // Re-bind navigation
+  document.querySelectorAll('nav button').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+  var calNav = document.querySelector('nav button[data-tab="calendar"]');
+  if (calNav) calNav.classList.add('active');
+  var calSec = document.getElementById('calendar');
+  if (calSec) calSec.classList.add('active');
+}
 
 function toggleTeamDetail(card, teamCls) {
   if (card.classList.contains('expanded')) { card.classList.remove('expanded'); return; }
@@ -879,11 +968,6 @@ function switchCalTab(tab) {
   else { document.querySelector('.cal-tabs button:last-child').classList.add('active'); }
   document.getElementById('cal-' + tab).classList.add('active');
 }
-
-loadAll();
-initParticles();
-updateCountdown();
-setInterval(updateCountdown, 60000);
 
 document.querySelectorAll('nav button').forEach(function(btn) {
   btn.addEventListener('click', function() {
