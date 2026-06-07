@@ -8,8 +8,9 @@
   :root {
     --f1-red: #E10600;
     --f1-dark: #15151E;
-    --f1-card: #1E1E2A;
-    --f1-border: #2A2A3A;
+    --f1-card: #1A1A26;
+    --f1-card2: #1F1F2E;
+    --f1-border: #2A2A3E;
     --f1-text: #E0E0E0;
     --f1-muted: #8888A0;
     --gold: #FFD700;
@@ -20,7 +21,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: #0D0D14;
+    background: #0B0B14;
     color: var(--f1-text);
     font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
     line-height: 1.5;
@@ -30,43 +31,54 @@
 
   /* Hero */
   .hero {
-    background: linear-gradient(135deg, var(--f1-red) 0%, #8B0000 50%, var(--f1-dark) 100%);
+    background: linear-gradient(135deg, #0D0D1A 0%, #1A0A0E 40%, var(--f1-red) 100%);
     padding: clamp(28px, 5vw, 50px) 16px clamp(20px, 4vw, 36px);
     text-align: center;
     position: relative;
     overflow: hidden;
   }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(225,6,0,0.15) 0%, transparent 60%);
+  }
   .hero::after {
     content: '';
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    height: 4px;
-    background: repeating-linear-gradient(90deg, var(--f1-red) 0px, var(--f1-red) 40px, #fff 40px, #fff 80px);
+    height: 3px;
+    background: repeating-linear-gradient(90deg, var(--f1-red) 0px, var(--f1-red) 36px, #fff 36px, #fff 72px);
   }
   .hero h1 {
     font-size: clamp(1.6rem, 5vw, 3rem);
     font-weight: 900;
     letter-spacing: -0.5px;
+    position: relative;
+    text-shadow: 0 2px 12px rgba(225,6,0,0.3);
   }
   .hero .sub {
     margin-top: 6px;
     font-size: clamp(0.8rem, 2vw, 1rem);
-    opacity: 0.9;
+    opacity: 0.85;
+    position: relative;
   }
   .hero .refresh-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     margin-top: 10px;
     padding: 4px 14px;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.35);
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     opacity: 0.8;
+    position: relative;
   }
   .refresh-badge .dot {
     display: inline-block;
     width: 7px; height: 7px;
     border-radius: 50%;
-    margin-right: 6px;
     background: #4CAF50;
   }
   .refresh-badge .dot.stale { background: #FF9800; }
@@ -79,7 +91,8 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    border-bottom: 2px solid var(--f1-red);
+    border-bottom: 1px solid rgba(225,6,0,0.3);
+    backdrop-filter: blur(8px);
   }
   nav .tabs {
     display: flex;
@@ -93,35 +106,36 @@
   nav button {
     flex: 1;
     min-width: fit-content;
-    padding: 12px 14px;
+    padding: 13px 16px;
     background: none; border: none;
     color: var(--f1-muted);
-    font-size: clamp(0.78rem, 2vw, 0.9rem);
+    font-size: clamp(0.78rem, 2vw, 0.88rem);
     font-weight: 600;
     cursor: pointer;
-    border-bottom: 3px solid transparent;
+    border-bottom: 2px solid transparent;
     white-space: nowrap;
     transition: all 0.2s;
     -webkit-tap-highlight-color: transparent;
   }
-  nav button:active { background: rgba(255,255,255,0.05); }
+  nav button:active { background: rgba(255,255,255,0.04); }
   nav button.active { color: #fff; border-bottom-color: var(--f1-red); }
 
   .container {
     max-width: 900px;
     margin: 0 auto;
-    padding: clamp(16px, 3vw, 28px) 12px;
+    padding: clamp(16px, 3vw, 28px) 14px;
   }
 
   .section { display: none; }
-  .section.active { display: block; animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .section.active { display: block; animation: fadeIn 0.35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
   h2 {
-    font-size: clamp(1.1rem, 3vw, 1.4rem);
-    margin-bottom: 14px;
-    padding-left: 10px;
-    border-left: 4px solid var(--f1-red);
+    font-size: clamp(1.05rem, 3vw, 1.3rem);
+    margin-bottom: 16px;
+    padding-left: 12px;
+    border-left: 3px solid var(--f1-red);
+    letter-spacing: -0.3px;
   }
 
   /* Stats row */
@@ -132,57 +146,60 @@
     margin-bottom: 24px;
   }
   .stat-card {
-    background: var(--f1-card);
+    background: linear-gradient(135deg, var(--f1-card) 0%, var(--f1-card2) 100%);
     border: 1px solid var(--f1-border);
-    border-radius: 10px;
-    padding: clamp(12px, 2vw, 18px);
+    border-radius: 12px;
+    padding: clamp(14px, 2vw, 20px);
     text-align: center;
+    transition: border-color 0.2s;
   }
   .stat-card .label {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: var(--f1-muted);
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin-bottom: 4px;
   }
   .stat-card .value {
     font-size: clamp(1.3rem, 3vw, 1.8rem);
     font-weight: 800;
-    margin-top: 2px;
   }
 
-  /* Tables */
+  /* Tables — polished */
   .table-wrap {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid var(--f1-border);
-    margin-bottom: 20px;
+    margin-bottom: 22px;
+    background: var(--f1-card);
   }
   table {
     width: 100%;
     border-collapse: collapse;
-    background: var(--f1-card);
-    font-size: clamp(0.72rem, 1.8vw, 0.88rem);
+    font-size: clamp(0.72rem, 1.8vw, 0.85rem);
   }
   th {
-    background: #252535;
+    background: rgba(255,255,255,0.03);
     color: var(--f1-muted);
     font-weight: 600;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 10px 12px;
+    letter-spacing: 0.8px;
+    padding: 11px 14px;
     text-align: left;
     white-space: nowrap;
+    border-bottom: 1px solid var(--f1-border);
   }
   td {
-    padding: 9px 12px;
-    border-bottom: 1px solid var(--f1-border);
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(42,42,62,0.5);
     white-space: nowrap;
   }
   tr:last-child td { border-bottom: none; }
-  tr:active td { background: rgba(225,6,0,0.08); }
-  .pos-1 { color: var(--gold); font-weight: 700; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  tr:active td { background: rgba(225,6,0,0.06); }
+  .pos-1 { color: var(--gold); font-weight: 800; }
   .pos-2 { color: var(--silver); font-weight: 700; }
   .pos-3 { color: var(--bronze); font-weight: 700; }
 
@@ -190,8 +207,9 @@
     display: inline-block;
     padding: 2px 8px;
     border-radius: 4px;
-    font-size: 0.73rem;
+    font-size: 0.7rem;
     font-weight: 600;
+    letter-spacing: 0.2px;
   }
   .team-mercedes { background: #00D2BE; color: #000; }
   .team-ferrari { background: #DC0000; color: #fff; }
@@ -208,58 +226,129 @@
   /* Calendar */
   .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
+  @media (max-width: 600px) {
+    .calendar-grid { grid-template-columns: 1fr; }
+  }
+
   .race-card {
-    background: var(--f1-card);
+    background: linear-gradient(160deg, var(--f1-card) 0%, var(--f1-card2) 100%);
     border: 1px solid var(--f1-border);
-    border-radius: 10px;
-    padding: 12px;
-    transition: border-color 0.2s;
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.2s, transform 0.1s, box-shadow 0.2s;
   }
-  .race-card:active { border-color: var(--f1-red); }
-  .race-card .round {
-    font-size: 0.65rem;
-    color: var(--f1-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  .race-card:active { border-color: var(--f1-red); transform: scale(0.98); }
+  .race-card .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
   }
-  .race-card .flag { font-size: 1.3rem; margin: 3px 0; }
-  .race-card .name { font-weight: 700; font-size: 0.8rem; line-height: 1.2; }
-  .race-card .date { font-size: 0.7rem; color: var(--f1-muted); margin-top: 3px; }
-  .race-card .badge {
+  .race-card .flag { font-size: 1.5rem; flex-shrink: 0; line-height: 1.1; }
+  .race-card .card-info { flex: 1; min-width: 0; }
+  .race-card .card-info .name { font-weight: 700; font-size: 0.85rem; line-height: 1.2; }
+  .race-card .card-info .track { font-size: 0.6rem; color: var(--f1-muted); margin-top: 2px; }
+  .race-card .card-info .sub { font-size: 0.62rem; color: var(--f1-muted); margin-top: 1px; }
+  .race-card .card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .race-badge {
     display: inline-block;
-    background: var(--f1-red); color: #fff;
-    font-size: 0.62rem; padding: 1px 6px;
-    border-radius: 3px; margin-top: 5px; font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    line-height: 1.4;
   }
-  .race-card.completed { opacity: 0.55; }
-  .race-card.upcoming { border-left: 3px solid var(--f1-red); }
+  .race-badge.rnd { background: rgba(255,255,255,0.06); color: var(--f1-muted); text-transform: uppercase; letter-spacing: 1px; }
+  .race-badge.done { background: rgba(76,175,80,0.12); color: #4CAF50; }
+  .race-badge.sprint { background: rgba(255,152,0,0.12); color: #FF9800; }
+
+  .race-card .schedule {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 10px;
+    background: rgba(0,0,0,0.15);
+    border-radius: 8px;
+  }
+  .race-card .sched-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.62rem;
+  }
+  .race-card .sched-line .s-label { flex-shrink: 0; font-weight: 600; font-size: 0.6rem; }
+  .race-card .sched-line .s-time { flex-shrink: 0; }
+  .race-card .sched-line.race .s-label { color: var(--f1-red); }
+  .race-card .sched-line.race .s-time { color: var(--f1-red); font-weight: 700; font-size: 0.67rem; }
+  .race-card .sched-line.quali { color: var(--f1-muted); }
+  .race-card .sched-line.sprint { color: #FF9800; }
+  .race-card .podium {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px 10px;
+    background: rgba(0,0,0,0.12);
+    border-radius: 8px;
+  }
+  .race-card .podium .p-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.6rem;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .race-card .podium .p-name { overflow: hidden; text-overflow: ellipsis; }
+  .race-card .podium .p-medal {
+    width: 15px; height: 15px; min-width: 15px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.5rem; font-weight: 900; line-height: 1;
+  }
+  .p-medal.gold { background: #FFD700; color: #000; }
+  .p-medal.silver { background: #C0C0C0; color: #000; }
+  .p-medal.bronze { background: #CD7F32; color: #fff; }
+  .race-card.completed { opacity: 0.5; }
+  .race-card.next-up {
+    border-left: 3px solid var(--f1-red);
+    box-shadow: 0 0 16px rgba(225,6,0,0.06), inset 0 1px 0 rgba(255,255,255,0.02);
+  }
 
   /* Tech cards */
   .tech-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 12px;
   }
   .tech-card {
-    background: var(--f1-card);
+    background: linear-gradient(160deg, var(--f1-card) 0%, var(--f1-card2) 100%);
     border: 1px solid var(--f1-border);
-    border-radius: 10px;
-    padding: clamp(12px, 2vw, 18px);
+    border-radius: 12px;
+    padding: clamp(14px, 2vw, 20px);
+    transition: border-color 0.2s;
   }
+  .tech-card:hover { border-color: rgba(225,6,0,0.15); }
   .tech-card h3 {
-    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    font-size: clamp(0.82rem, 2vw, 0.92rem);
     margin-bottom: 10px;
-    color: var(--f1-red);
   }
   .tech-card .spec {
     display: flex;
     justify-content: space-between;
-    padding: 5px 0;
-    border-bottom: 1px solid var(--f1-border);
-    font-size: clamp(0.72rem, 1.8vw, 0.82rem);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(42,42,62,0.4);
+    font-size: clamp(0.7rem, 1.8vw, 0.8rem);
     gap: 12px;
   }
   .tech-card .spec:last-child { border-bottom: none; }
@@ -281,9 +370,9 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .error-box {
-    background: #3D0E0E;
-    border: 1px solid #8B0000;
-    border-radius: 10px;
+    background: rgba(180,0,0,0.12);
+    border: 1px solid rgba(139,0,0,0.4);
+    border-radius: 12px;
     padding: 16px;
     margin-bottom: 16px;
     font-size: 0.85rem;
@@ -292,11 +381,12 @@
 
   .footer {
     text-align: center;
-    padding: 20px;
+    padding: 24px;
     color: var(--f1-muted);
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     border-top: 1px solid var(--f1-border);
     margin-top: 20px;
+    letter-spacing: 0.3px;
   }
 
   .btn-retry {
@@ -310,6 +400,17 @@
     font-size: 0.8rem;
     cursor: pointer;
   }
+
+  /* Section-header accent labels */
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin: 20px 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .section-label.up { color: var(--f1-red); }
+  .section-label.past { color: var(--f1-muted); }
 </style>
 </head>
 <body>
@@ -349,30 +450,30 @@
 // ===== DATA =====
 
 const CALENDAR = [
-  {r:1,flag:'🇦🇺',name:'Australian GP', date:'3月8日',venue:'墨尔本',time:'12:00',done:true},
-  {r:2,flag:'🇨🇳',name:'Chinese GP',      date:'3月15日',venue:'上海',time:'15:00',done:true,sprint:true},
-  {r:3,flag:'🇯🇵',name:'Japanese GP',      date:'3月29日',venue:'铃鹿',time:'13:00',done:true},
-  {r:4,flag:'🇧🇭',name:'Bahrain GP',       date:'4月12日',venue:'萨基尔',time:'23:00',done:true},
-  {r:5,flag:'🇸🇦',name:'Saudi Arabian GP', date:'4月19日',venue:'吉达',time:'01:00(+1)',done:true},
-  {r:6,flag:'🇺🇸',name:'Miami GP',         date:'5月3日',venue:'迈阿密',time:'04:00(+1)',done:true,sprint:true},
-  {r:7,flag:'🇨🇦',name:'Canadian GP',      date:'5月24日',venue:'蒙特利尔',time:'04:00(+1)',done:true,sprint:true},
-  {r:8,flag:'🇲🇨',name:'Monaco GP',        date:'6月7日',venue:'蒙特卡洛',time:'21:00'},
-  {r:9,flag:'🇪🇸',name:'Spanish GP',       date:'6月14日',venue:'巴塞罗那',time:'21:00'},
-  {r:10,flag:'🇦🇹',name:'Austrian GP',     date:'6月28日',venue:'斯皮尔伯格',time:'21:00'},
-  {r:11,flag:'🇬🇧',name:'British GP',      date:'7月5日',venue:'银石',time:'22:00',sprint:true},
-  {r:12,flag:'🇧🇪',name:'Belgian GP',      date:'7月19日',venue:'斯帕',time:'21:00'},
-  {r:13,flag:'🇭🇺',name:'Hungarian GP',    date:'7月26日',venue:'布达佩斯',time:'21:00'},
-  {r:14,flag:'🇳🇱',name:'Dutch GP',        date:'8月23日',venue:'赞德沃特',time:'21:00',sprint:true},
-  {r:15,flag:'🇮🇹',name:'Italian GP',      date:'9月6日',venue:'蒙扎',time:'21:00'},
-  {r:16,flag:'🇪🇸',name:'Madrid GP 🆕',    date:'9月13日',venue:'马德里',time:'21:00'},
-  {r:17,flag:'🇦🇿',name:'Azerbaijan GP',   date:'9月27日',venue:'巴库',time:'19:00'},
-  {r:18,flag:'🇸🇬',name:'Singapore GP',    date:'10月11日',venue:'滨海湾',time:'20:00',sprint:true},
-  {r:19,flag:'🇺🇸',name:'United States GP',date:'10月25日',venue:'奥斯汀',time:'04:00(+1)'},
-  {r:20,flag:'🇲🇽',name:'Mexico City GP',   date:'11月1日',venue:'墨西哥城',time:'04:00(+1)'},
-  {r:21,flag:'🇧🇷',name:'São Paulo GP',      date:'11月8日',venue:'圣保罗',time:'01:00(+1)'},
-  {r:22,flag:'🇺🇸',name:'Las Vegas GP',      date:'11月22日(六)',venue:'拉斯维加斯',time:'12:00'},
-  {r:23,flag:'🇶🇦',name:'Qatar GP',          date:'11月29日',venue:'卢赛尔',time:'00:00(+1)'},
-  {r:24,flag:'🇦🇪',name:'Abu Dhabi GP',      date:'12月6日',venue:'亚斯码头',time:'21:00'},
+  {r:1,flag:'🇦🇺',name:'澳大利亚大奖赛',en:'Australian GP', date:'3月8日',venue:'墨尔本',track:'阿尔伯特公园赛道',time:'12:00',quali:'3月7日 13:00',done:true,podium:['Andrea Kimi Antonelli','George Russell','Charles Leclerc']},
+  {r:2,flag:'🇨🇳',name:'中国大奖赛',en:'Chinese GP',      date:'3月15日',venue:'上海',track:'上海国际赛车场',time:'15:00',quali:'3月14日 15:00',done:true,sprint:true,sprintQuali:'3月13日 15:30',sprintRace:'3月14日 11:00',podium:['Andrea Kimi Antonelli','Charles Leclerc','George Russell']},
+  {r:3,flag:'🇯🇵',name:'日本大奖赛',en:'Japanese GP',      date:'3月29日',venue:'铃鹿',track:'铃鹿赛道',time:'13:00',quali:'3月28日 14:00',done:true,podium:['Andrea Kimi Antonelli','Lewis Hamilton','Lando Norris']},
+  {r:4,flag:'🇧🇭',name:'巴林大奖赛',en:'Bahrain GP',       date:'4月12日',venue:'萨基尔',track:'巴林国际赛道',time:'23:00',quali:'4月11日 23:00',done:true,podium:['George Russell','Charles Leclerc','Andrea Kimi Antonelli']},
+  {r:5,flag:'🇸🇦',name:'沙特阿拉伯大奖赛',en:'Saudi Arabian GP', date:'4月19日',venue:'吉达',track:'吉达滨海赛道',time:'01:00(+1)',quali:'4月18日 01:00',done:true,podium:['Andrea Kimi Antonelli','Lewis Hamilton','Oscar Piastri']},
+  {r:6,flag:'🇺🇸',name:'迈阿密大奖赛',en:'Miami GP',         date:'5月3日',venue:'迈阿密',track:'迈阿密国际赛道',time:'04:00(+1)',quali:'5月2日 04:00',done:true,sprint:true,sprintQuali:'5月1日 04:30',sprintRace:'5月2日 00:00',podium:['Charles Leclerc','Andrea Kimi Antonelli','George Russell']},
+  {r:7,flag:'🇨🇦',name:'加拿大大奖赛',en:'Canadian GP',      date:'5月24日',venue:'蒙特利尔',track:'吉尔斯·维伦纽夫赛道',time:'04:00(+1)',quali:'5月23日 04:00',done:true,sprint:true,sprintQuali:'5月22日 04:30',sprintRace:'5月23日 00:00',podium:['Lewis Hamilton','Charles Leclerc','Lando Norris']},
+  {r:8,flag:'🇲🇨',name:'摩纳哥大奖赛',en:'Monaco GP',        date:'6月7日',venue:'蒙特卡洛',track:'蒙特卡洛赛道',time:'21:00',quali:'6月6日 22:00'},
+  {r:9,flag:'🇪🇸',name:'西班牙大奖赛',en:'Spanish GP',       date:'6月14日',venue:'巴塞罗那',track:'巴塞罗那-加泰罗尼亚赛道',time:'21:00',quali:'6月13日 22:00'},
+  {r:10,flag:'🇦🇹',name:'奥地利大奖赛',en:'Austrian GP',     date:'6月28日',venue:'斯皮尔伯格',track:'红牛环赛道',time:'21:00',quali:'6月27日 22:00'},
+  {r:11,flag:'🇬🇧',name:'英国大奖赛',en:'British GP',      date:'7月5日',venue:'银石',track:'银石赛道',time:'22:00',quali:'7月4日 22:00',sprint:true,sprintQuali:'7月3日 23:30',sprintRace:'7月4日 18:00'},
+  {r:12,flag:'🇧🇪',name:'比利时大奖赛',en:'Belgian GP',      date:'7月19日',venue:'斯帕',track:'斯帕-弗朗科尔尚赛道',time:'21:00',quali:'7月18日 22:00'},
+  {r:13,flag:'🇭🇺',name:'匈牙利大奖赛',en:'Hungarian GP',    date:'7月26日',venue:'布达佩斯',track:'匈牙利赛道',time:'21:00',quali:'7月25日 22:00'},
+  {r:14,flag:'🇳🇱',name:'荷兰大奖赛',en:'Dutch GP',        date:'8月23日',venue:'赞德沃特',track:'赞德沃特赛道',time:'21:00',quali:'8月22日 21:00',sprint:true,sprintQuali:'8月21日 22:30',sprintRace:'8月22日 17:00'},
+  {r:15,flag:'🇮🇹',name:'意大利大奖赛',en:'Italian GP',      date:'9月6日',venue:'蒙扎',track:'蒙扎国家赛道',time:'21:00',quali:'9月5日 22:00'},
+  {r:16,flag:'🇪🇸',name:'马德里大奖赛 🆕',en:'Madrid GP 🆕',    date:'9月13日',venue:'马德里',track:'马德里街道赛道',time:'21:00',quali:'9月12日 22:00'},
+  {r:17,flag:'🇦🇿',name:'阿塞拜疆大奖赛',en:'Azerbaijan GP',   date:'9月27日',venue:'巴库',track:'巴库城市赛道',time:'19:00',quali:'9月26日 20:00'},
+  {r:18,flag:'🇸🇬',name:'新加坡大奖赛',en:'Singapore GP',    date:'10月11日',venue:'滨海湾',track:'滨海湾街道赛道',time:'20:00',quali:'10月10日 21:00',sprint:true,sprintQuali:'10月9日 21:30',sprintRace:'10月10日 17:00'},
+  {r:19,flag:'🇺🇸',name:'美国大奖赛',en:'United States GP',date:'10月25日',venue:'奥斯汀',track:'美洲赛道',time:'04:00(+1)',quali:'10月24日 06:00'},
+  {r:20,flag:'🇲🇽',name:'墨西哥城大奖赛',en:'Mexico City GP',   date:'11月1日',venue:'墨西哥城',track:'罗德里格斯兄弟赛道',time:'04:00(+1)',quali:'10月31日 05:00'},
+  {r:21,flag:'🇧🇷',name:'圣保罗大奖赛',en:'São Paulo GP',      date:'11月8日',venue:'圣保罗',track:'若泽·卡洛斯·帕斯赛道',time:'01:00(+1)',quali:'11月7日 02:00'},
+  {r:22,flag:'🇺🇸',name:'拉斯维加斯大奖赛',en:'Las Vegas GP',      date:'11月22日(六)',venue:'拉斯维加斯',track:'拉斯维加斯街道赛道',time:'12:00',quali:'11月21日 14:00'},
+  {r:23,flag:'🇶🇦',name:'卡塔尔大奖赛',en:'Qatar GP',          date:'11月29日',venue:'卢赛尔',track:'卢赛尔国际赛道',time:'00:00(+1)',quali:'11月28日 01:00'},
+  {r:24,flag:'🇦🇪',name:'阿布扎比大奖赛',en:'Abu Dhabi GP',      date:'12月6日',venue:'亚斯码头',track:'亚斯码头赛道',time:'21:00',quali:'12月5日 22:00'},
 ];
 
 const TEAMS = [
@@ -392,7 +493,7 @@ const TEAMS = [
 // ===== HELPERS =====
 
 const CACHE_KEY = 'f1_2026_cache';
-const CACHE_TTL = 60 * 60 * 1000; // 1 hour
+const CACHE_TTL = 60 * 60 * 1000;
 
 function setStatus(state, text) {
   var dot = document.getElementById('refreshDot');
@@ -435,10 +536,18 @@ function renderStandings(data) {
   var constructors = data.constructors || [];
   var leader = drivers[0] || {};
   var wins = leader.wins || 0;
-  var completedRaces = 7;
-  var totalRaces = 24;
 
-  var num1 = posClass(1), num2 = posClass(2), num3 = posClass(3);
+  // Compute from CALENDAR — always accurate as long as data is updated
+  var completedRaces = 0;
+  var lastCompleted = null;
+  for (var i = 0; i < CALENDAR.length; i++) {
+    if (CALENDAR[i].done) {
+      completedRaces++;
+      lastCompleted = CALENDAR[i];
+    }
+  }
+  var totalRaces = CALENDAR.length;
+  var updateText = lastCompleted ? (lastCompleted.name + ' · ' + new Date().toLocaleDateString('zh-CN')) : new Date().toLocaleDateString('zh-CN');
 
   var html = '';
   html += '<div class="stats-row">';
@@ -449,7 +558,7 @@ function renderStandings(data) {
   html += '</div>';
 
   html += '<h2>车手积分榜</h2><div class="table-wrap"><table>';
-  html += '<thead><tr><th>#</th><th>车手</th><th>车队</th><th>冠军</th><th>积分</th></tr></thead><tbody>';
+  html += '<thead><tr><th>#</th><th>车手</th><th>车队</th><th>🏆 冠军</th><th>积分</th></tr></thead><tbody>';
   for (var i = 0; i < drivers.length; i++) {
     var d = drivers[i];
     var pcls = i < 3 ? ' pos-' + (i + 1) : '';
@@ -462,7 +571,7 @@ function renderStandings(data) {
   html += '</tbody></table></div>';
 
   html += '<h2>车队积分榜</h2><div class="table-wrap"><table>';
-  html += '<thead><tr><th>#</th><th>车队</th><th>车手</th><th>积分</th></tr></thead><tbody>';
+  html += '<thead><tr><th>#</th><th>车队</th><th>车手阵容</th><th>积分</th></tr></thead><tbody>';
   for (var j = 0; j < constructors.length; j++) {
     var c = constructors[j];
     var pc = j < 3 ? ' pos-' + (j + 1) : '';
@@ -473,7 +582,7 @@ function renderStandings(data) {
   }
   html += '</tbody></table></div>';
 
-  html += '<p style="font-size:0.72rem;color:var(--f1-muted);text-align:center;margin-top:8px;">数据更新至 2026年5月24日 加拿大站 · 本页生成于 ' + new Date().toLocaleString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}) + '</p>';
+  html += '<p style="font-size:0.68rem;color:var(--f1-muted);text-align:center;margin-top:8px;">数据更新至 ' + updateText + ' · 本页生成于 ' + new Date().toLocaleString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}) + '</p>';
 
   document.getElementById('standingsContent').innerHTML = html;
 }
@@ -482,7 +591,6 @@ function posClass(i) { return i === 1 ? 'pos-1' : i === 2 ? 'pos-2' : i === 3 ? 
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function renderCalendar() {
-  // Split into upcoming (not done) and completed
   var upcoming = [];
   var completed = [];
   for (var i = 0; i < CALENDAR.length; i++) {
@@ -493,33 +601,65 @@ function renderCalendar() {
   var html = '<h2>2026 赛历 · 24 场分站</h2>';
 
   // Upcoming first
-  html += '<h3 style="font-size:0.9rem;color:var(--f1-red);margin:16px 0 10px 0;">即将举行 (' + upcoming.length + ' 场)</h3>';
+  html += '<div class="section-label up">即将举行 · ' + upcoming.length + ' 场</div>';
   html += '<div class="calendar-grid">';
   for (var u = 0; u < upcoming.length; u++) {
     var r = upcoming[u];
-    html += '<div class="race-card upcoming">';
-    html += '<div class="round">R' + r.r + '</div>';
+    var cardCls = u === 0 ? 'race-card next-up' : 'race-card';
+    html += '<div class="' + cardCls + '">';
+    html += '<div class="card-top">';
     html += '<div class="flag">' + r.flag + '</div>';
+    html += '<div class="card-info">';
     html += '<div class="name">' + r.name + '</div>';
-    html += '<div class="date">' + r.date + ' · ' + r.venue + '</div>';
-    html += '<div class="date" style="color:var(--f1-red);font-weight:600;">🕐 正赛 ' + r.time + ' 北京时间</div>';
-    if (r.sprint) html += '<div class="badge">🏃 冲刺赛</div>';
+    html += '<div class="track">' + r.en + ' · ' + r.track + '</div>';
+    html += '<div class="sub">' + r.date + ' · ' + r.venue + '</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '<div class="card-badges">';
+    html += '<span class="race-badge rnd">R' + r.r + '</span>';
+    if (r.sprint) {
+      html += '<span class="race-badge sprint">🏃 冲刺赛</span>';
+    }
+    html += '</div>';
+    html += '<div class="schedule">';
+    html += '<div class="sched-line race"><span class="s-label">🏁 正赛</span><span class="s-time">' + r.time + '</span></div>';
+    html += '<div class="sched-line quali"><span class="s-label">⏱ 排位赛</span><span class="s-time">' + r.quali + '</span></div>';
+    if (r.sprint) {
+      html += '<div class="sched-line sprint"><span class="s-label">⚡ 冲刺排位</span><span class="s-time">' + r.sprintQuali + '</span></div>';
+      html += '<div class="sched-line sprint"><span class="s-label">🏃 冲刺赛</span><span class="s-time">' + r.sprintRace + '</span></div>';
+    }
+    html += '</div>';
     html += '</div>';
   }
   html += '</div>';
 
   // Completed below
-  html += '<h3 style="font-size:0.9rem;color:var(--f1-muted);margin:24px 0 10px 0;">已结束 (' + completed.length + ' 场)</h3>';
+  html += '<div class="section-label past">已结束 · ' + completed.length + ' 场</div>';
   html += '<div class="calendar-grid">';
   for (var c = 0; c < completed.length; c++) {
     var r2 = completed[c];
     html += '<div class="race-card completed">';
-    html += '<div class="round">R' + r2.r + ' · 已完成</div>';
+    html += '<div class="card-top">';
     html += '<div class="flag">' + r2.flag + '</div>';
+    html += '<div class="card-info">';
     html += '<div class="name">' + r2.name + '</div>';
-    html += '<div class="date">' + r2.date + ' · ' + r2.venue + '</div>';
-    html += '<div class="date">🕐 ' + r2.time + ' 北京时间</div>';
-    if (r2.sprint) html += '<div class="badge">🏃 冲刺赛</div>';
+    html += '<div class="track">' + r2.track + '</div>';
+    html += '<div class="sub">' + r2.date + ' · ' + r2.venue + '</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '<div class="card-badges">';
+    html += '<span class="race-badge done">✓ 已完成</span>';
+    if (r2.sprint) {
+      html += '<span class="race-badge sprint">🏃 冲刺赛</span>';
+    }
+    html += '</div>';
+    if (r2.podium && r2.podium.length >= 3) {
+      html += '<div class="podium">';
+      html += '<div class="p-line"><span class="p-medal gold">1</span><span class="p-name">' + esc(r2.podium[0]) + '</span></div>';
+      html += '<div class="p-line"><span class="p-medal silver">2</span><span class="p-name">' + esc(r2.podium[1]) + '</span></div>';
+      html += '<div class="p-line"><span class="p-medal bronze">3</span><span class="p-name">' + esc(r2.podium[2]) + '</span></div>';
+      html += '</div>';
+    }
     html += '</div>';
   }
   html += '</div>';
@@ -535,17 +675,17 @@ function renderTeams() {
     html += '<tr>';
     html += '<td><strong>' + t.name + '</strong></td>';
     html += '<td>' + t.pu + '</td>';
-    html += '<td>' + t.d1 + ' (#' + t.d1n + ')</td>';
-    html += '<td>' + t.d2 + ' (#' + t.d2n + ')</td>';
+    html += '<td>' + t.d1 + ' <span style="color:var(--f1-muted);font-size:0.65rem;">#' + t.d1n + '</span></td>';
+    html += '<td>' + t.d2 + ' <span style="color:var(--f1-muted);font-size:0.65rem;">#' + t.d2n + '</span></td>';
     html += '</tr>';
   }
   html += '</tbody></table></div>';
 
   html += '<h2>阵容亮点</h2><div class="tech-grid">';
-  html += '<div class="tech-card"><h3>🆕 唯一新秀</h3><p style="font-size:0.85rem;">18 岁的 Arvid Lindblad (Racing Bulls) 是从 F2 直接晋升的唯一新秀车手。</p></div>';
-  html += '<div class="tech-card"><h3>🏁 全新车队</h3><p style="font-size:0.85rem;">Cadillac 作为第 11 支车队加入 F1，由 Pérez 和 Bottas 搭档。Audi 正式以厂队身份接管 Sauber。</p></div>';
-  html += '<div class="tech-card"><h3>🔄 红牛重组</h3><p style="font-size:0.85rem;">Isack Hadjar 晋升红牛正队；角田裕毅降为储备车手。Adrian Newey 出任 Aston Martin 领队。</p></div>';
-  html += '<div class="tech-card"><h3>👑 新王登基</h3><p style="font-size:0.85rem;">19 岁的 Andrea Kimi Antonelli 在新秀赛季斩获 4 场分站冠军，以 43 分优势领跑积分榜。</p></div>';
+  html += '<div class="tech-card"><h3>🆕 唯一新秀</h3><p style="font-size:0.82rem;line-height:1.7;">18 岁的 Arvid Lindblad (Racing Bulls) 是从 F2 直接晋升的唯一新秀车手。</p></div>';
+  html += '<div class="tech-card"><h3>🏁 全新车队</h3><p style="font-size:0.82rem;line-height:1.7;">Cadillac 作为第 11 支车队加入 F1，由 Pérez 和 Bottas 搭档。Audi 正式以厂队身份接管 Sauber。</p></div>';
+  html += '<div class="tech-card"><h3>🔄 红牛重组</h3><p style="font-size:0.82rem;line-height:1.7;">Isack Hadjar 晋升红牛正队；角田裕毅降为储备车手。Adrian Newey 出任 Aston Martin 领队。</p></div>';
+  html += '<div class="tech-card"><h3>👑 新王登基</h3><p style="font-size:0.82rem;line-height:1.7;">19 岁的 Andrea Kimi Antonelli 在新秀赛季斩获 4 场分站冠军，以 43 分优势领跑积分榜。</p></div>';
   html += '</div>';
   document.getElementById('teams').innerHTML = html;
 }
@@ -553,7 +693,6 @@ function renderTeams() {
 function renderTech() {
   var html = '';
 
-  // ---- Section 1: General 2026 rules (condensed) ----
   html += '<h2>2026 通用技术规则</h2>';
   html += '<div class="tech-grid">';
   html += '<div class="tech-card"><h3>📐 底盘尺寸</h3>';
@@ -581,13 +720,12 @@ function renderTech() {
   html += '</div>';
   html += '</div>';
 
-  // ---- Section 2: Per-team analysis (big four + others) ----
   html += '<h2>车队技术优劣势分析 · 2026 赛季中</h2>';
 
   // Mercedes
   html += '<div class="tech-card" style="margin-bottom:14px;border-left:4px solid #00D2BE;">';
   html += '<h3><span class="team-tag team-mercedes">Mercedes</span> 动力之王 · 统治开局</h3>';
-  html += '<div style="font-size:0.82rem;color:var(--f1-text);line-height:1.8;">';
+  html += '<div style="font-size:0.8rem;color:var(--f1-text);line-height:1.8;">';
   html += '<strong>✅ 优势</strong><br>';
   html += '• 动力单元全场最强——极速 333 km/h，能量部署效率无可匹敌<br>';
   html += '• MGU-K 部署持续时间最长，clipping（能量削减）幅度最小<br>';
@@ -603,7 +741,7 @@ function renderTech() {
   // Ferrari
   html += '<div class="tech-card" style="margin-bottom:14px;border-left:4px solid #DC0000;">';
   html += '<h3><span class="team-tag team-ferrari">Ferrari</span> 弯道之王 · 动力待破局</h3>';
-  html += '<div style="font-size:0.82rem;color:var(--f1-text);line-height:1.8;">';
+  html += '<div style="font-size:0.8rem;color:var(--f1-text);line-height:1.8;">';
   html += '<strong>✅ 优势</strong><br>';
   html += '• 高速弯道全场最佳——蒙特利尔 141 km/h 过弯，比 Mercedes 快 4 km/h<br>';
   html += '• 更小涡轮设计 → 涡轮迟滞极低，低速响应和起步性能出色<br>';
@@ -619,7 +757,7 @@ function renderTech() {
   // McLaren
   html += '<div class="tech-card" style="margin-bottom:14px;border-left:4px solid #FF8700;">';
   html += '<h3><span class="team-tag team-mclaren">McLaren</span> 进步最快 · 稳健追赶</h3>';
-  html += '<div style="font-size:0.82rem;color:var(--f1-text);line-height:1.8;">';
+  html += '<div style="font-size:0.8rem;color:var(--f1-text);line-height:1.8;">';
   html += '<strong>✅ 优势</strong><br>';
   html += '• 全场唯一未用满 3400mm 轴距的赛车（短约 10cm），更轻更灵活<br>';
   html += '• 拉杆前悬挂 → 前翼气流质量更优，整车空力平衡出色<br>';
@@ -635,7 +773,7 @@ function renderTech() {
   // Red Bull
   html += '<div class="tech-card" style="margin-bottom:14px;border-left:4px solid #3671C6;">';
   html += '<h3><span class="team-tag team-redbull">Red Bull</span> 从霸主坠落 · 反弹最快</h3>';
-  html += '<div style="font-size:0.82rem;color:var(--f1-text);line-height:1.8;">';
+  html += '<div style="font-size:0.8rem;color:var(--f1-text);line-height:1.8;">';
   html += '<strong>✅ 优势</strong><br>';
   html += '• 迈阿密站进步最大——正赛圈速提升 0.92 秒（赛道特性调整后 0.7 秒）<br>';
   html += '• 座舱-前轴间距紧凑，提升前翼进气量和底板气流体积<br>';
@@ -667,7 +805,7 @@ function renderTech() {
   html += '<p style="font-size:0.8rem;line-height:1.7;">两支全新厂队，均用法拉利 PU。Audi 2 分，Cadillac 0 分——新规元年建队期，重心在 2027-2028 竞争力而非当前积分。</p></div>';
   html += '</div>';
 
-  html += '<p style="font-size:0.72rem;color:var(--f1-muted);text-align:center;">数据来源：Motorsport.com / F1Technical / RaceFans · 更新至迈阿密站</p>';
+  html += '<p style="font-size:0.68rem;color:var(--f1-muted);text-align:center;">数据来源：Motorsport.com / F1Technical / RaceFans</p>';
 
   document.getElementById('tech').innerHTML = html;
 }
@@ -722,21 +860,13 @@ function getBuiltinData() {
 function loadStandings() {
   var data = getBuiltinData();
   renderStandings(data);
-  setStatus('', '数据更新至加拿大站 · ' + new Date().toLocaleDateString('zh-CN'));
+  setStatus('', '数据更新至' + new Date().toLocaleDateString('zh-CN'));
 }
 
-// Pre-render static tabs
 renderCalendar();
 renderTeams();
 renderTech();
-
-// Render standings instantly (no network call)
 loadStandings();
-
-// Pre-render static tabs
-renderCalendar();
-renderTeams();
-renderTech();
 
 // Tab switching
 document.querySelectorAll('nav button').forEach(function(btn) {
@@ -748,7 +878,6 @@ document.querySelectorAll('nav button').forEach(function(btn) {
   });
 });
 
-// Tab switching
 </script>
 
 </body>
