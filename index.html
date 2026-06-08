@@ -254,7 +254,10 @@ h2 { font-family:var(--font-display); font-size:clamp(0.85rem, 2.5vw, 1rem); fon
 .r-detail { display:none; flex-direction:column; gap:6px; }
 .r-card.expanded .r-detail { display:flex; animation:fadeSlide 0.25s ease; }
 @keyframes fadeSlide { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
-.r-detail .d-block { padding:8px 10px; background:rgba(0,0,0,0.14); border-radius:var(--radius-sm); }
+.r-detail .d-block { padding:8px 10px; background:rgba(0,0,0,0.14); border-radius:var(--radius-sm); overflow-x:auto; -webkit-overflow-scrolling:touch; }
+@media(max-width:480px){ .r-detail .d-block { margin:0 -4px; } }
+.r-detail .d-block::-webkit-scrollbar { height:2px; }
+.r-detail .d-block::-webkit-scrollbar-thumb { background:var(--f1-border); border-radius:1px; }
 .r-detail .d-title { font-family:var(--font-display); font-size:0.49rem; color:var(--f1-muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px; display:flex; align-items:center; gap:4px; }
 .r-detail .d-title .d-title-icon { font-family:var(--font-body); letter-spacing:0; }
 .r-detail .d-title .d-pos-w { color:var(--f1-muted); }
@@ -262,20 +265,23 @@ h2 { font-family:var(--font-display); font-size:clamp(0.85rem, 2.5vw, 1rem); fon
 .r-detail .d-row.d-header { font-size:0.44rem; color:var(--f1-muted); opacity:0.5; padding-bottom:4px; border-bottom:1px solid rgba(255,255,255,0.04); margin-bottom:2px; }
 .r-detail .d-row .d-pos-w { width:28px; min-width:28px; text-align:center; font-weight:700; color:var(--f1-muted); flex-shrink:0; font-size:0.48rem; }
 .r-detail .d-row .d-pos-w.d-dnf { color:var(--f1-red); }
-.r-detail .d-row .d-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:0 6px; }
-.r-detail .d-row .d-code { color:var(--f1-muted); font-family:var(--font-display); font-size:0.46rem; margin-right:4px; }
+.r-detail .d-row .d-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:0 4px; }
 .r-detail .d-row .d-grid { width:72px; min-width:72px; text-align:center; font-size:0.46rem; font-family:var(--font-display); flex-shrink:0; }
+@media(max-width:480px){ .r-detail .d-row .d-grid { width:66px; min-width:66px; font-size:0.44rem; } }
 .r-detail .d-row .d-grid.up { color:var(--accent-green); }
 .r-detail .d-row .d-grid.down { color:var(--f1-red); }
 .r-detail .d-row .d-grid.hold { color:var(--f1-muted); opacity:0.4; }
 .r-detail .d-row .d-grid.none { color:var(--f1-muted); opacity:0.2; }
 .r-detail .d-row .d-grid .d-arrow { font-size:0.38rem; }
 .r-detail .d-row .d-pts { width:36px; min-width:36px; text-align:right; font-family:var(--font-display); font-size:0.48rem; color:var(--f1-muted); flex-shrink:0; }
+@media(max-width:480px){ .r-detail .d-row .d-pts { width:30px; min-width:30px; font-size:0.44rem; } }
 .r-detail .d-row .d-pts.pos { color:var(--accent-green); }
 .r-detail .d-row .d-status-w { width:52px; min-width:52px; text-align:center; flex-shrink:0; }
+@media(max-width:480px){ .r-detail .d-row .d-status-w { width:44px; min-width:44px; } }
 .r-detail .d-row .d-status-badge { font-size:0.42rem; padding:1px 5px; border-radius:3px; }
 .r-detail .d-row .d-status-badge.dnf { background:rgba(225,6,0,0.12); color:var(--f1-red); }
 .r-detail .d-row .d-time { text-align:right; font-family:var(--font-display); font-size:0.48rem; color:var(--f1-muted); flex-shrink:0; min-width:60px; }
+@media(max-width:480px){ .r-detail .d-row .d-time { min-width:52px; font-size:0.44rem; } }
 .r-detail .d-row .d-quali-detail { text-align:right; font-family:var(--font-display); font-size:0.48rem; color:var(--f1-muted); flex-shrink:0; cursor:help; border-bottom:1px dotted rgba(255,255,255,0.08); min-width:70px; }
 .r-detail .d-info { font-size:0.54rem; color:var(--f1-muted); line-height:1.7; }
 .r-detail .d-loading { text-align:center; padding:8px; color:var(--f1-muted); font-size:0.54rem; }
@@ -916,7 +922,7 @@ function fillDetail(el, key) {
       }
       var ptsClass = rc.points > 0 ? 'pos' : '';
       var statusHtml = rc.isDNF ? '<span class="d-status-badge dnf">' + (rc.status.length > 6 ? rc.status.substring(0,6) : rc.status) + '</span>' : '<span class="d-status-badge" style="opacity:0.2;">完赛</span>';
-      html += '<div class="d-row">' + posHtml + '<span class="d-name"><span class="d-code">' + esc(rc.code) + '</span>' + esc(rc.driver) + '</span>' + gridHtml + '<span class="d-pts ' + ptsClass + '">+' + rc.points + '</span><span class="d-status-w">' + statusHtml + '</span><span class="d-time">' + (rc.time || '') + '</span></div>';
+      html += '<div class="d-row">' + posHtml + '<span class="d-name">' + esc(rc.driver) + '</span>' + gridHtml + '<span class="d-pts ' + ptsClass + '">+' + rc.points + '</span><span class="d-status-w">' + statusHtml + '</span><span class="d-time">' + (rc.time || '') + '</span></div>';
     }
     html += '</div>';
   }
@@ -932,7 +938,7 @@ function fillDetail(el, key) {
       if (q.q1) qualiDetail += 'Q1 ' + q.q1;
       if (q.q2) qualiDetail += ' | Q2 ' + q.q2;
       if (q.q3) qualiDetail += ' | Q3 ' + q.q3;
-      html += '<div class="d-row"><span class="d-pos-w">P' + (i + 1) + '</span><span class="d-name"><span class="d-code">' + esc(q.code) + '</span>' + esc(q.driver) + '</span><span class="d-quali-detail" title="' + esc(qualiDetail) + '">' + esc(qualiTime) + '</span></div>';
+      html += '<div class="d-row"><span class="d-pos-w">P' + (i + 1) + '</span><span class="d-name">' + esc(q.driver) + '</span><span class="d-quali-detail" title="' + esc(qualiDetail) + '">' + esc(qualiTime) + '</span></div>';
     }
     html += '</div>';
   }
@@ -961,7 +967,7 @@ function fillDetail(el, key) {
       }
       var ptsClass = s.points > 0 ? 'pos' : '';
       var statusHtml = s.isDNF ? '<span class="d-status-badge dnf">' + (s.status.length > 6 ? s.status.substring(0,6) : s.status) + '</span>' : '<span class="d-status-badge" style="opacity:0.2;">完赛</span>';
-      html += '<div class="d-row">' + posHtml + '<span class="d-name"><span class="d-code">' + esc(s.code) + '</span>' + esc(s.driver) + '</span>' + gridHtml + '<span class="d-pts ' + ptsClass + '">+' + s.points + '</span><span class="d-status-w">' + statusHtml + '</span><span class="d-time">' + (s.time || '') + '</span></div>';
+      html += '<div class="d-row">' + posHtml + '<span class="d-name">' + esc(s.driver) + '</span>' + gridHtml + '<span class="d-pts ' + ptsClass + '">+' + s.points + '</span><span class="d-status-w">' + statusHtml + '</span><span class="d-time">' + (s.time || '') + '</span></div>';
     }
     html += '</div>';
   }
@@ -969,7 +975,7 @@ function fillDetail(el, key) {
   // Fastest lap
   if (dd.fastestLap) {
     html += '<div class="d-block"><div class="d-title"><span class="d-title-icon">⚡</span> 最快圈速</div>';
-    html += '<div class="d-row"><span class="d-name"><span class="d-code"></span>' + esc(dd.fastestLap.driver) + '</span><span class="d-time">' + esc(dd.fastestLap.time) + '</span></div></div>';
+    html += '<div class="d-row"><span class="d-name">' + esc(dd.fastestLap.driver) + '</span><span class="d-time">' + esc(dd.fastestLap.time) + '</span></div></div>';
   }
 
   el.innerHTML = html;
