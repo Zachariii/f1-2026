@@ -1039,6 +1039,7 @@ function loadAll() {
     });
     STANDINGS = { drivers: drivers, constructors: constructors };
     renderStandings();
+    renderTeams();
   }).catch(function(err) { console.warn('Jolpica API 不可用：', err.message); });
 
   // Auto-refresh standings every 5 minutes
