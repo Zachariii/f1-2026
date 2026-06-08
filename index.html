@@ -146,6 +146,7 @@ h2 { font-family:var(--font-display); font-size:clamp(0.85rem, 2.5vw, 1rem); fon
 .stat-card::after { content:''; position:absolute; top:0; left:15%; right:15%; height:1.5px; background:linear-gradient(90deg,transparent 0%,var(--f1-red) 50%,transparent 100%); opacity:0.25; }
 .stat-card .label { font-family:var(--font-display); font-size:0.5rem; color:var(--f1-muted); text-transform:uppercase; letter-spacing:2px; margin-bottom:4px; }
 .stat-card .value { font-family:var(--font-display); font-size:clamp(0.95rem,2.2vw,1.35rem); font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.stat-card .stat-unit { font-size:clamp(0.6rem,1.5vw,0.8rem); font-weight:500; color:var(--f1-muted); margin-left:2px; }
 .stat-card .sub-value { font-size:0.55rem; color:var(--f1-muted); margin-top:2px; }
 
 /* Standings */
@@ -181,35 +182,39 @@ h2 { font-family:var(--font-display); font-size:clamp(0.85rem, 2.5vw, 1rem); fon
 .team-mercedes{background:#00D2BE;color:#000}.team-ferrari{background:#DC0000;color:#fff}.team-mclaren{background:#FF8700;color:#000}.team-redbull{background:#3671C6;color:#fff}.team-alpine{background:#0093CC;color:#fff}.team-haas{background:#B6BABD;color:#000}.team-racingbulls{background:#6692FF;color:#fff}.team-williams{background:#005AFF;color:#fff}.team-audi{background:#4CAF50;color:#000}.team-cadillac{background:#1A1A2E;color:#E0C068;border:1px solid #E0C068}.team-astonmartin{background:#006F62;color:#fff}
 
 /* Team cards */
-.team-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:10px; margin-bottom:28px; }
-@media(max-width:600px){ .team-grid{grid-template-columns:1fr;} }
+.team-grid { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
 .t-card {
   background:var(--f1-card); border:1px solid var(--f1-border); border-radius:var(--radius-md);
-  padding:16px; display:flex; flex-direction:column; gap:12px;
-  transition:border-color var(--transition-fast),transform var(--transition-fast),box-shadow var(--transition-fast);
-  cursor:pointer; box-shadow:var(--shadow-card);
+  overflow:hidden; box-shadow:var(--shadow-card);
+  transition:border-color var(--transition-fast),transform var(--transition-fast);
 }
-.t-card:hover { border-color:rgba(225,6,0,0.18); transform:translateY(-2px); box-shadow:var(--shadow-pulse); }
+.t-card:hover { border-color:rgba(225,6,0,0.18); transform:translateY(-1px); }
 .t-card:active { border-color:var(--f1-red); transform:scale(0.985); }
-.t-card .t-header { display:flex; align-items:center; justify-content:space-between; gap:8px; }
-.t-card .t-drivers { display:flex; gap:8px; }
-.t-card .t-drv {
-  flex:1; background:rgba(0,0,0,0.2); border-radius:8px; padding:12px 8px; text-align:center;
-  min-width:0; border:1px solid rgba(255,255,255,0.03); transition:border-color var(--transition-fast);
-}
-.t-card .t-drv:hover { border-color:rgba(255,255,255,0.06); }
-.t-card .t-drv-name { font-weight:700; font-size:0.76rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.t-card .t-drv-num { font-size:0.56rem; color:var(--f1-muted); margin-top:2px; font-family:var(--font-display); }
-.t-card .t-toggle { display:flex; align-items:center; justify-content:center; gap:4px; padding:3px 0 0; font-size:0.54rem; color:var(--f1-muted); cursor:pointer; font-family:var(--font-display); letter-spacing:1px; text-transform:uppercase; transition:color var(--transition-fast); }
-.t-card .t-toggle:hover { color:var(--f1-text); }
-.t-card .t-toggle .t-arrow { transition:transform var(--transition-fast); font-size:0.5rem; display:inline-block; }
-.t-card.expanded .t-toggle .t-arrow { transform:rotate(180deg); }
-.t-detail { display:none; padding:10px 12px; background:rgba(0,0,0,0.14); border-radius:var(--radius-sm); flex-direction:column; gap:5px; }
+
+.team-main { display:flex; align-items:center; justify-content:space-between; padding:16px; gap:10px; }
+.team-left { display:flex; align-items:center; gap:14px; flex:1; min-width:0; }
+.team-rank { width:32px;height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:0.78rem; font-weight:900; flex-shrink:0; background:rgba(255,255,255,0.03); color:var(--f1-muted); }
+.team-rank.r1 { background:linear-gradient(135deg,rgba(255,215,0,0.18),rgba(255,215,0,0.05)); color:var(--gold); }
+.team-rank.r2 { background:linear-gradient(135deg,rgba(200,200,208,0.1),rgba(200,200,208,0.03)); color:var(--silver); }
+.team-rank.r3 { background:linear-gradient(135deg,rgba(205,127,50,0.12),rgba(205,127,50,0.03)); color:var(--bronze); }
+.team-meta { flex:1; min-width:0; display:flex; flex-direction:column; gap:4px; }
+.team-name-row { display:flex; align-items:center; gap:8px; }
+.team-sub { display:flex; flex-wrap:wrap; gap:3px 10px; font-size:0.58rem; color:var(--f1-muted); }
+.team-drivers { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.team-right { display:flex; flex-direction:column; align-items:flex-end; gap:3px; flex-shrink:0; margin-left:auto; }
+.team-pts { font-family:var(--font-display); font-size:1.1rem; font-weight:900; line-height:1; }
+.team-pts-label { font-size:0.45rem; font-weight:700; color:var(--f1-muted); margin-left:3px; }
+.team-wins-label { font-size:0.5rem; color:var(--f1-muted); letter-spacing:0.5px; }
+
+.t-card .t-detail { display:none; padding:0 16px 16px; flex-direction:column; gap:8px; }
 .t-card.expanded .t-detail { display:flex; animation:fadeSlide 0.25s ease; }
-.t-detail .td-row { display:flex; justify-content:space-between; align-items:center; font-size:0.58rem; gap:8px; }
-.t-detail .td-row .td-l { color:var(--f1-muted); font-family:var(--font-display); font-size:0.46rem; text-transform:uppercase; letter-spacing:0.8px; flex-shrink:0; }
-.t-detail .td-row .td-v { text-align:right; font-weight:600; }
-.t-card .t-rank { display:inline-flex; align-items:center; justify-content:center; min-width:22px; height:22px; border-radius:4px; font-family:var(--font-display); font-size:0.55rem; font-weight:700; background:rgba(225,6,0,0.08); color:var(--f1-red); flex-shrink:0; }
+.t-card .t-detail .td-row { display:flex; justify-content:space-between; align-items:center; font-size:0.65rem; padding:8px 10px; background:rgba(0,0,0,0.14); border-radius:var(--radius-sm); gap:8px; }
+.t-card .t-detail .td-row .td-l { color:var(--f1-muted); font-family:var(--font-display); font-size:0.46rem; text-transform:uppercase; letter-spacing:0.8px; flex-shrink:0; }
+.t-card .t-detail .td-row .td-v { text-align:right; font-weight:600; }
+.t-card .t-toggle { display:flex; align-items:center; justify-content:center; gap:5px; padding:12px 0; font-size:0.54rem; color:var(--f1-muted); cursor:pointer; font-family:var(--font-display); letter-spacing:1px; text-transform:uppercase; transition:color var(--transition-fast); border-top:1px solid rgba(255,255,255,0.03); margin:0 16px; }
+.t-card .t-toggle:hover { color:var(--f1-text); }
+.t-card .t-toggle .t-arrow { transition:transform var(--transition-fast); font-size:0.48rem; display:inline-block; }
+.t-card.expanded .t-toggle .t-arrow { transform:rotate(180deg); }
 
 /* Calendar */
 .calendar-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
@@ -262,6 +267,23 @@ h2 { font-family:var(--font-display); font-size:clamp(0.85rem, 2.5vw, 1rem); fon
 
 .r-card.completed { opacity:0.5; }
 .r-card.completed:hover { opacity:0.7; }
+
+/* Champion banner */
+.champion-banner { background:var(--f1-card); border:1px solid var(--f1-border); border-radius:var(--radius-md); padding:18px; display:flex; flex-direction:column; gap:10px; box-shadow:var(--shadow-card); margin-bottom:10px; }
+.champ-header { font-size:0.72rem; font-weight:700; text-align:center; padding-bottom:10px; border-bottom:1px solid var(--f1-border); letter-spacing:0.8px; text-transform:uppercase; }
+.champ-row { display:flex; align-items:center; gap:10px; padding:8px 10px; background:rgba(0,0,0,0.16); border-radius:var(--radius-sm); }
+.champ-pos { width:26px;height:26px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:900; flex-shrink:0; background:rgba(255,255,255,0.03); color:var(--f1-muted); font-family:var(--font-display); }
+.champ-pos.c1 { background:rgba(255,215,0,0.12); color:var(--gold); }
+.champ-pos.c2 { background:rgba(200,200,208,0.08); color:var(--silver); }
+.champ-pos.c3 { background:rgba(205,127,50,0.1); color:var(--bronze); }
+.champ-info { flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; }
+.champ-name { font-weight:700; font-size:0.72rem; }
+.champ-team { font-size:0.55rem; color:var(--f1-muted); }
+.champ-meta { display:flex; flex-direction:column; align-items:flex-end; gap:1px; flex-shrink:0; }
+.champ-pts { font-size:0.72rem; font-weight:800; font-family:var(--font-display); }
+.champ-wins { font-size:0.5rem; color:var(--f1-muted); }
+.champ-loading { text-align:center; padding:20px 0; color:var(--f1-muted); font-size:0.6rem; }
+
 .r-card.next-up { border-color:rgba(225,6,0,0.3); box-shadow:0 0 24px rgba(225,6,0,0.06), var(--shadow-card); }
 .r-card.next-up::before {
   content:''; position:absolute; inset:-1px; border-radius:inherit; border:1px solid transparent;
@@ -394,7 +416,7 @@ h2 { font-family:var(--font-display); font-size:clamp(0.85rem, 2.5vw, 1rem); fon
   </section>
 </main>
 
-<footer class="footer">F1 数据来源 <a href="https://api.jolpi.ca" target="_blank">Jolpica API</a> · 新闻来源 <a href="https://www.motorsport.com/rss/f1/news/" target="_blank">Motorsport.com</a></footer>
+<footer class="footer">F1 数据来源 <a href="https://api.jolpi.ca" target="_blank">Jolpica API</a> · 新闻来源 <a href="https://www.motorsport.com/rss/f1/news/" target="_blank">Motorsport.com</a><br><span style="opacity:0.4;font-size:0.5rem;">F1 为 Formula One 集团注册商标 · 本应用仅供个人学习参考</span></footer>
 
 <script>
 // ===== DATA =====
@@ -419,6 +441,8 @@ var CALENDARS = {};       // year -> array of race objects
 var CAL_PODIUMS = {};     // "year-round" -> podium data
 var STANDINGS = null;
 var RACE_DETAILS = {};
+var CHAMPIONS = {};       // year -> top 3 drivers
+var CURRENT_CHAMPION = null;
 
 // Country-to-flag & race name mappings
 var FLAG_MAP = {
@@ -563,6 +587,8 @@ function renderStandings() {
   var drivers = data.drivers || [];
   var constructors = data.constructors || [];
   var leader = drivers[0] || {};
+  var second = drivers[1] || {};
+  var pointGap = leader.points && second.points ? (leader.points - second.points) : 0;
   var wins = leader.wins || 0;
   // Count total wins across all drivers
   var totalWins = 0;
@@ -580,8 +606,8 @@ function renderStandings() {
   var html = '';
   html += '<div class="stats-row">';
   html += '<div class="stat-card"><div class="label">2026 赛季领跑者</div><div class="value">' + (leader.driver ? shortName(leader.driver) : '—') + '</div><div class="sub-value">' + esc(leader.team || '') + '</div></div>';
-  html += '<div class="stat-card"><div class="label">积分</div><div class="value">' + (leader.points || '—') + '</div></div>';
-  html += '<div class="stat-card"><div class="label">分站冠军</div><div class="value">' + wins + '</div><div class="sub-value">共 ' + completedRaces + ' 场</div></div>';
+  html += '<div class="stat-card"><div class="label">领跑积分</div><div class="value">' + (leader.points || '—') + '</div><div class="sub-value">领先 P2 ' + pointGap + ' 分</div></div>';
+  html += '<div class="stat-card"><div class="label">赛季进度</div><div class="value">' + completedRaces + '<span class="stat-unit">/' + totalRaces + '</span></div><div class="sub-value">已完成 / 总站数</div></div>';
   html += '<div class="stat-card"><div class="label">领跑车队</div><div class="value">' + esc(leaderConstructor) + '</div><div class="sub-value">' + esc(constructors[0] && constructors[0].points ? constructors[0].points + ' 分' : '') + '</div></div>';
   html += '</div>';
 
@@ -627,6 +653,10 @@ function renderCalendar() {
   for (var i = 0; i < cal.length; i++) {
     if (cal[i].done) completed.push(cal[i]); else upcoming.push(cal[i]);
   }
+  // Reverse completed so most recent race appears first
+  var completedReversed = [];
+  for (var ci = completed.length - 1; ci >= 0; ci--) { completedReversed.push(completed[ci]); }
+
   var html = '';
 
   // Year selector
@@ -670,12 +700,46 @@ function renderCalendar() {
 
   // Past section
   html += '<div class="cal-section' + (defaultTab === 'past' ? ' active' : '') + '" id="cal-past"><div class="calendar-grid">';
-  for (var c = 0; c < completed.length; c++) {
-    html += raceCardHTML(completed[c], false);
+
+  // Champion banner for past years
+  if (CALENDAR_YEAR < 2026) {
+    var champ = CHAMPIONS[CALENDAR_YEAR] || null;
+    html += '<div class="champion-banner" id="championBanner">';
+    if (champ && champ.length) {
+      html += '<div class="champ-header">' + CALENDAR_YEAR + ' 赛季总冠军</div>';
+      for (var chi = 0; chi < champ.length; chi++) {
+        var c = champ[chi];
+        html += '<div class="champ-row"><span class="champ-pos ' + (chi === 0 ? 'c1' : chi === 1 ? 'c2' : 'c3') + '">' + (chi + 1) + '</span><span class="champ-info"><span class="champ-name">' + esc(c.driver) + '</span><span class="champ-team">' + esc(c.team) + '</span></span><span class="champ-meta"><span class="champ-pts">' + c.points + ' 分</span><span class="champ-wins">🏆 ' + c.wins + '胜</span></span></div>';
+      }
+    } else {
+      html += '<div class="champ-loading" id="champLoading">加载赛季排名…</div>';
+    }
+    html += '</div>';
+  }
+
+  for (var c = 0; c < completedReversed.length; c++) {
+    html += raceCardHTML(completedReversed[c], false);
   }
   html += '</div></div>';
 
   document.getElementById('calendarContent').innerHTML = html;
+}
+
+function loadChampion(y) {
+  if (CHAMPIONS[y]) return;
+  fetch('https://api.jolpi.ca/ergast/f1/' + y + '/driverStandings.json')
+    .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
+    .then(function(json) {
+      var list = json.MRData.StandingsTable.StandingsLists[0].DriverStandings || [];
+      var top3 = list.slice(0, 3).map(function(d) {
+        return { driver: d.Driver.givenName + ' ' + d.Driver.familyName, team: d.Constructors[0].name, points: d.points, wins: d.wins };
+      });
+      CHAMPIONS[y] = top3;
+      if (y === CALENDAR_YEAR) CURRENT_CHAMPION = top3;
+      // Re-render if viewing this year
+      if (CALENDAR_YEAR === y) renderCalendar();
+    })
+    .catch(function(err) { console.warn('Failed loading champion data for ' + y, err.message); });
 }
 
 function raceCardHTML(r, isNext) {
@@ -831,21 +895,59 @@ function fillDetail(el, key) {
 
 function renderTeams() {
   var consStandings = (STANDINGS && STANDINGS.constructors) ? STANDINGS.constructors : [];
-  var rankMap = {};
-  for (var i = 0; i < consStandings.length; i++) { rankMap[consStandings[i]._cls] = i + 1; }
 
-  var html = '<h2>车队与车手阵容</h2><div class="team-grid">';
-  for (var i = 0; i < TEAMS.length; i++) {
-    var t = TEAMS[i];
-    var rank = rankMap[t.cls] || '—';
+  // Build lookup: api name (cls) -> { rank, points, wins }
+  var apiData = {};
+  consStandings.forEach(function(c, idx) {
+    apiData[c._cls] = { rank: idx + 1, points: c.points || 0, wins: c.wins || 0, drivers: c.drivers || '' };
+  });
+
+  var html = '<h2>2026 车队排名</h2><div class="team-grid">';
+
+  // Build teams with data and sort by rank
+  var teamsWithRank = TEAMS.map(function(t) {
+    var info = apiData[t.cls] || {};
+    return {
+      t: t,
+      rank: info.rank || '—',
+      rankNum: info.rank || 999,
+      points: info.points || 0,
+      wins: info.wins || 0,
+      driversText: info.drivers || shortName(t.d1) + ' / ' + shortName(t.d2)
+    };
+  });
+  teamsWithRank.sort(function(a, b) { return a.rankNum - b.rankNum; });
+
+  for (var i = 0; i < teamsWithRank.length; i++) {
+    var tw = teamsWithRank[i];
+    var t = tw.t;
+    var rank = tw.rank;
+    var rankCls = rank === 1 ? ' r1' : rank === 2 ? ' r2' : rank === 3 ? ' r3' : '';
+
     html += '<div class="t-card" style="animation-delay:' + (i * 0.04) + 's" onclick="toggleTeamDetail(this,\'' + t.cls + '\')">';
-    html += '<div class="t-header"><span class="team-tag ' + t.cls + '">' + t.name + '</span><span class="t-rank">' + (t.flag || '') + '</span></div>';
-    html += '<div class="t-drivers"><div class="t-drv"><div class="t-drv-name">' + (t.d1nat || '') + ' ' + t.d1 + '</div><div class="t-drv-num">#' + t.d1n + '</div></div><div class="t-drv"><div class="t-drv-name">' + (t.d2nat || '') + ' ' + t.d2 + '</div><div class="t-drv-num">#' + t.d2n + '</div></div></div>';
-    html += '<div class="t-detail" id="td-' + t.cls + '"><div class="td-row"><span class="td-l">加载中…</span></div></div>';
+    html += '<div class="team-main"><div class="team-left">';
+    html += '<span class="team-rank' + rankCls + '">' + rank + '</span>';
+    html += '<div class="team-meta"><div class="team-name-row"><span class="team-tag ' + t.cls + '">' + t.name + '</span></div>';
+    html += '<div class="team-sub"><span class="team-drivers">' + esc(tw.driversText) + '</span><span class="team-pu">' + t.pu + ' · ' + t.nation + '</span></div></div></div>';
+    html += '<div class="team-right"><span class="team-pts">' + tw.points + '<span class="team-pts-label">PTS</span></span>';
+    if (tw.wins > 0) html += '<span class="team-wins-label">🏆 ' + tw.wins + '胜</span>';
+    html += '</div></div>';
+
+    html += '<div class="t-detail" id="td-' + t.cls + '">';
+    html += '<div class="td-row"><span class="td-l">全称</span><span class="td-v">' + t.name + '</span></div>';
+    html += '<div class="td-row"><span class="td-l">国籍</span><span class="td-v">' + t.flag + ' ' + t.nation + '</span></div>';
+    html += '<div class="td-row"><span class="td-l">动力单元</span><span class="td-v">' + t.pu + '</span></div>';
+    html += '<div class="td-row"><span class="td-l">成立年份</span><span class="td-v">' + t.founded + '</span></div>';
+    html += '<div class="td-row"><span class="td-l">总冠军</span><span class="td-v" style="color:var(--gold);font-weight:700;">' + t.champs + ' 次</span></div>';
+    if (rank !== '—') html += '<div class="td-row"><span class="td-l">2026 积分</span><span class="td-v" style="color:var(--f1-red);font-weight:700;">' + tw.points + ' 分</span></div>';
+    if (tw.wins > 0) html += '<div class="td-row"><span class="td-l">赛季胜场</span><span class="td-v" style="color:var(--accent-green);">' + tw.wins + ' 场</span></div>';
+    html += '</div>';
+
     html += '<div class="t-toggle" onclick="event.stopPropagation();toggleTeamDetail(this.parentElement,\'' + t.cls + '\')">详情 <span class="t-arrow">▾</span></div>';
     html += '</div>';
   }
   html += '</div>';
+
   html += '<h2>阵容亮点</h2><div class="highlight-grid">';
   html += '<div class="h-card"><div class="hc-icon">🆕</div><div class="hc-title">唯一新秀</div><div class="hc-body">18 岁的 Arvid Lindblad (Racing Bulls) 从 F2 直接晋升</div></div>';
   html += '<div class="h-card"><div class="hc-icon">🏁</div><div class="hc-title">全新车队</div><div class="hc-body">Cadillac 加入 F1。Audi 接管 Sauber 开始新征程</div></div>';
@@ -853,6 +955,11 @@ function renderTeams() {
   html += '<div class="h-card"><div class="hc-icon">👑</div><div class="hc-title">新王登基</div><div class="hc-body">Antonelli 新秀赛季 4 冠，131 分领跑</div></div>';
   html += '</div>';
   document.getElementById('teams').innerHTML = html;
+}
+
+function toggleTeamDetail(card, teamCls) {
+  if (card.classList.contains('expanded')) { card.classList.remove('expanded'); return; }
+  card.classList.add('expanded');
 }
 
 function getBuiltinData() {
@@ -934,8 +1041,8 @@ function loadAll() {
     renderStandings();
   }).catch(function(err) { console.warn('Jolpica API 不可用：', err.message); });
 
-  // Auto-refresh standings every 10 minutes
-  setTimeout(function() { loadAll(); }, 600000);
+  // Auto-refresh standings every 5 minutes
+  setTimeout(function() { loadAll(); }, 300000);
 }
 
 function loadPodiumsInBackground(y) {
@@ -988,6 +1095,8 @@ function switchYear(y) {
   var cal = CALENDARS[y] || [];
   renderCalendar();
   updateCountdown();
+  // Load champion data for past years
+  if (y < 2026) { loadChampion(y); }
   // Re-bind navigation
   document.querySelectorAll('nav button').forEach(function(b) { b.classList.remove('active'); });
   document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
@@ -995,36 +1104,6 @@ function switchYear(y) {
   if (calNav) calNav.classList.add('active');
   var calSec = document.getElementById('calendar');
   if (calSec) calSec.classList.add('active');
-}
-
-function toggleTeamDetail(card, teamCls) {
-  if (card.classList.contains('expanded')) { card.classList.remove('expanded'); return; }
-  card.classList.add('expanded');
-  var detailEl = document.getElementById('td-' + teamCls);
-  if (!detailEl || detailEl.getAttribute('data-loaded')) return;
-  var t = null;
-  for (var i = 0; i < TEAMS.length; i++) { if (TEAMS[i].cls === teamCls) { t = TEAMS[i]; break; } }
-  var standingsData = (STANDINGS && STANDINGS.constructors) ? STANDINGS.constructors : [];
-  var sc = null;
-  for (var j = 0; j < standingsData.length; j++) {
-    var c = standingsData[j];
-    if (c._cls === teamCls) { sc = c; break; }
-  }
-  if (!sc) {
-    var apiMap = { 'team-mercedes':'Mercedes', 'team-ferrari':'Ferrari', 'team-mclaren':'McLaren', 'team-redbull':'Red Bull', 'team-astonmartin':'Aston Martin', 'team-alpine':'Alpine F1 Team', 'team-haas':'Haas F1 Team', 'team-racingbulls':'RB F1 Team', 'team-williams':'Williams', 'team-audi':'Audi', 'team-cadillac':'Cadillac F1 Team' };
-    var apiName = apiMap[teamCls];
-    for (var k = 0; k < standingsData.length; k++) { if (standingsData[k].team === apiName) { sc = standingsData[k]; break; } }
-  }
-  var points = sc ? sc.points : '—';
-  var html = '';
-  html += '<div class="td-row"><span class="td-l">车队 ID</span><span class="td-v">' + (t ? t.id : '—') + '</span></div>';
-  html += '<div class="td-row"><span class="td-l">国籍</span><span class="td-v">' + (t ? t.nation : '—') + '</span></div>';
-  html += '<div class="td-row"><span class="td-l">成立</span><span class="td-v">' + (t ? t.founded : '—') + '</span></div>';
-  html += '<div class="td-row"><span class="td-l">总冠军</span><span class="td-v" style="color:var(--gold);">' + (t ? t.champs : '—') + '</span></div>';
-  html += '<div class="td-row"><span class="td-l">2026 积分</span><span class="td-v" style="color:var(--f1-red);">' + points + '</span></div>';
-  html += '<div class="td-row"><span class="td-l">车手</span><span class="td-v">' + (t ? t.d1.split(' ').pop() + ' & ' + t.d2.split(' ').pop() : '—') + '</span></div>';
-  detailEl.innerHTML = html;
-  detailEl.setAttribute('data-loaded','1');
 }
 
 function switchCalTab(tab) {
